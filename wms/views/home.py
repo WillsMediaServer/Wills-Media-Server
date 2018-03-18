@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect
 import logging
-from wms.security import pageData, login
 
 class homeBlueprint:
     def __init__(self, config, database, security):
@@ -12,20 +11,20 @@ class homeBlueprint:
 
         @home.route("/")
         def homePage():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             return render_template("home/home.html", pageName="Home", config=pageConfig)
 
         @home.route("/login/", methods=["GET"])
         def loginPage():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             return render_template("home/login.html", pageName="Login", config=pageConfig)
 
         @home.route("/login/", methods=["POST"])
         def loginAction():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             username = str(request.form["username"])
             password = str(request.form["password"])
-            loginResult = login(username, password, database)
+            loginResult = security.login(username, password, database)
             if loginResult[0] == True:
                 session["userID"] = loginResult[1].id
                 session["loggedIn"] = True
@@ -35,12 +34,12 @@ class homeBlueprint:
 
         @home.route("/register/")
         def registerPage():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             return render_template("home/register.html", pageName="Register", config=pageConfig)
 
         @home.route("/register/", methods=["POST"])
         def registerAction():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             fname = str(request.form["firstName"])
             lname = str(request.form["lastName"])
             username = str(request.form["username"])
@@ -62,12 +61,12 @@ class homeBlueprint:
 
         @home.route("/logout/", methods=['GET'])
         def logoutPage():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             return render_template("home/logout.html", pageName="Logout", config=pageConfig)
 
         @home.route("/logout/", methods=['POST'])
         def logoutAction():
-            pageConfig = pageData(self.configData, database)
+            pageConfig = security.pageData(self.configData, database)
             session["loggedIn"] = False
             session["userID"] = None
             return redirect(str(pageConfig["Request"]["rootURL"]), code=302)
