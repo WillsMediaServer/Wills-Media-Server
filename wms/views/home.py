@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect
 import logging
-from wms.security import pageData
+from wms.security import pageData, login
 
 class homeBlueprint:
     def __init__(self, config, database, security):
@@ -25,35 +25,13 @@ class homeBlueprint:
             pageConfig = pageData(self.configData, database)
             username = str(request.form["username"])
             password = str(request.form["password"])
-            errors = []
-            if username == "" or username == None:
-                errors.append("username is Empty")
-            if password == "" or password == None:
-                errors.append("password is Empty")
-
-            try:
-                userData = database.User.query.filter_by(username=username).first()
-                if userData == None:
-                    errors.append("User doesn't Exist")
-                    return render_template("home/accountError.html", pageName="Login Error", config=pageConfig, errors=errors)
-                else:
-                    logging.debug("User with ID of " + str(userData.id) + " is attempting a login")
-            except Exception as e:
-                logging.warning("Error while Logging into account: " + str(e))
-                userData = False
-                errors.append("Couldn't get user from DB")
-
-            if userData.password == password:
-                session["userID"] = userData.id
+            loginResult = login(username, password, database)
+            if loginResult[0] == True:
+                session["userID"] = loginResult[1].id
                 session["loggedIn"] = True
                 return redirect(str(pageConfig["Request"]["rootURL"]), code=302)
             else:
-                session["userID"] = None
-                session["loggedIn"] = False
-                errors.append("Password is incorrect!")
-
-            if len(errors) > 0:
-                return render_template("home/accountError.html", pageName="Login Error", config=pageConfig, errors=errors)
+                return render_template("home/accountError.html", pageName="Login Error", config=pageConfig, errors=loginResult[1])
 
         @home.route("/register/")
         def registerPage():
