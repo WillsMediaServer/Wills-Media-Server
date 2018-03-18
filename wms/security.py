@@ -1,5 +1,5 @@
 from flask import session, request, render_template
-import logging, re
+import logging, re, hashlib
 
 class Security:
     def __init__(self, config):
@@ -22,7 +22,7 @@ class Security:
 
         return error
 
-    def login(self, username, password, database):
+    def login(self, config, username, password, database):
         errors = []
         # check for empty fields
         if username == "" or username == None:
@@ -35,7 +35,7 @@ class Security:
         if userData == None:
             errors.append("User doesn't Exist")
         else:
-            if userData.password != password:
+            if self.passCheck(config, userData.password, password) != True:
                 errors.append("Incorrect password")
 
         # returns the userdata if there are no errors
@@ -60,3 +60,11 @@ class Security:
         pageData["Request"] = {}
         pageData["Request"]["rootURL"] = str(request.url_root)
         return pageData
+
+    def passHash(self, config, password):
+        salt = config.configData["Security"]["salt"]
+        return hashlib.sha256(salt.encode() + password.encode()).hexdigest()
+
+    def passCheck(self, config, passHash, password):
+        salt = config.configData["Security"]["salt"]
+        return passHash == hashlib.sha256(salt.encode() + password.encode()).hexdigest()

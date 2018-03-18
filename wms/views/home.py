@@ -24,7 +24,7 @@ class homeBlueprint:
             pageConfig = security.pageData(self.configData, database)
             username = str(request.form["username"])
             password = str(request.form["password"])
-            loginResult = security.login(username, password, database)
+            loginResult = security.login(config, username, password, database)
             if loginResult[0] == True:
                 session["userID"] = loginResult[1].id
                 session["loggedIn"] = True
@@ -48,7 +48,7 @@ class homeBlueprint:
             email = str(request.form["email"])
             validation = security.accountValidator(username, password, passwordConfirm, email)
             if validation == []:
-                user = database.User(username=username, password=password, firstName=fname, lastName=lname, email=email)
+                user = database.User(username=username, password=security.passHash(config, password), firstName=fname, lastName=lname, email=email)
                 database.db.session.add(user)
                 database.db.session.commit()
                 userData = database.User.query.filter_by(username=username).first()
