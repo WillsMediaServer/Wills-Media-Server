@@ -1,5 +1,7 @@
 {% include 'includes/header.html' %}
-{% for error in errors %}
-<p>{{ error }}</p>
-{% endfor %}
+<section class="box box-danger">
+  {% for error in errors %}
+    <p>{{ error }}</p>
+  {% endfor %}
+</section>
 {% include 'includes/footer.html' %}
