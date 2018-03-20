@@ -1,9 +1,15 @@
 /* variables */
 :root {
     --colour-info: #2196f3;
-    --colour-success: #4CAF50;
-    --colour-warning: #FF9800;
+    --colour-success: #4caf50;
+    --colour-warning: #ff9800;
     --colour-danger: #f44336;
+
+    --colour-ui-main: #eeeeee;
+    --colour-ui-main-hover: #e0e0e0;
+    --colour-ui-link: #29b6f6;
+    --colour-ui-link-hover: #0288d1;
+    --colour-ui-footer: #607d8b;
 }
 
 *, *:before, *:after {
@@ -34,21 +40,23 @@ span {
   color: #424242;
 }
 
-.heading-1,
-.heading-2,
-.heading-3 {
-  line-height: 1.2;
-  padding: 1%;
-  display: block;
+.heading-1 {
+  font-size: 2em;
+  font-weight: bold;
 }
 
+.subheading {
+  font-size: 1.5em;
+  padding: 0.5em;
+  font-weight: lighter;
+}
 
 nav {
   width: 100%;
   height: 10vh;
   display: flex;
   align-items: center;
-  background-color: #eee;
+  background-color: var(--colour-ui-main);
 }
 
 .navItem {
@@ -59,11 +67,12 @@ nav {
   padding: 0 25px;
   text-decoration: none;
   font-size: 1rem;
+  text-transform: uppercase;
 }
 
 .navItem.active,
 .navItem:hover {
-  background-color: #e0e0e0;
+  background-color: var(--colour-ui-main-hover);
 }
 
 .search {
@@ -81,7 +90,7 @@ nav {
 
 header {
   width: 100%;
-  height: 50vh;
+  height: 25vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,15 +101,10 @@ header {
   display: block;
 }
 
-.title,
-.subtitle {
+.title {
   text-align: center;
   display: block;
-  font-weight: lighter;
-}
-
-.title {
-  font-size: 6rem;
+  font-size: 4em;
   font-weight: lighter;
 }
 
@@ -109,17 +113,15 @@ header {
   display: block;
 }
 
-.profile {
-  border: 1px solid #000;
-  display: block;
-  margin: 1% auto;
+.account {
   text-align: center;
-  padding: 1% 3%;
-  width: 75%;
+  width: 100%;
+  padding: 2vw 10vw;
+  background-color: var(--colour-ui-main);
 }
 
 footer {
-  background-color: #455A64;
+  background-color: var(--colour-ui-footer);
   display: block;
   height: 30vh;
   display: flex;
@@ -147,6 +149,7 @@ footer {
   cursor: pointer;
   text-decoration: none;
   font-size: 1rem;
+  text-transform: uppercase;
 }
 
 .button-login {
@@ -221,7 +224,7 @@ footer {
 
 .form {
   display: block;
-  background-color: #E0E0E0;
+  background-color: var(--colour-ui-main);
   width: 75%;
   margin: 1% auto;
   padding: 1%;
@@ -240,13 +243,13 @@ footer {
 
 /* Link Styles */
 .link {
-  color: #03a9f4;
+  color: var(--colour-ui-link);
   text-decoration: none;
   cursor: pointer;
 }
 
 .link:hover {
-  color: #0288D1;
+  color: var(--colour-ui-link-hover);
   text-decoration: underline;
 }
 

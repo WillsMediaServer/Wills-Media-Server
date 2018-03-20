@@ -5,12 +5,13 @@
   </section>
 </header>
 <main class="mainContent">
-  <section class="profile">
+  <section class="account">
+    <h2 class="heading-1">Account</h2>
     {% if config.User.loggedIn %}
-      <h4 class="heading-3">Welcome Back {{ config.User.firstName }}!</h4>
+      <h4 class="subheading">Welcome Back {{ config.User.firstName }}!</h4>
       <a class="link" href="/dashboard/">Dashboard</a> - <a class="link" href="/logout/">Logout</a>
     {% else %}
-      <h4 class="heading-3">Please Register or Login</h4>
+      <h4 class="subheading">Please Register or Login</h4>
       <section class="group group-two">
         <a class="button button-success" href="/login/">Login</a>
         <a class="button button-info" href="/register/">Register</a>
