@@ -43,6 +43,7 @@ span {
 .heading-1 {
   font-size: 2em;
   font-weight: bold;
+<<<<<<< HEAD
   text-align: center;
 }
 
@@ -58,6 +59,8 @@ span {
 }
 
 /* Navigation Styles */
+=======
+>>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 
 nav {
   width: 100%;
@@ -75,7 +78,9 @@ nav {
   padding: 0 25px;
   text-decoration: none;
   font-size: 1rem;
+<<<<<<< HEAD
   text-transform: capitalize;
+>>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 }
 
 .navItem.active,
@@ -117,8 +122,10 @@ header {
   font-size: 4em;
   font-weight: lighter;
 }
+<<<<<<< HEAD
 
 /* Account Section Styles */
+>>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 
 .account {
   text-align: center;
@@ -127,6 +134,7 @@ header {
   background-color: var(--colour-ui-main);
 }
 
+<<<<<<< HEAD
 /* Statistics Section Styles */
 
 .statistics {
@@ -147,6 +155,8 @@ header {
 .stat-name {
   font-weight: bold;
   font-size: 1.3em;
+=======
+>>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 }
 
 /* Footer Section Styles */
@@ -180,8 +190,11 @@ footer {
   cursor: pointer;
   text-decoration: none;
   font-size: 1rem;
+<<<<<<< HEAD
   text-transform: capitalize;
   display: inline-block;
+=======
+>>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 }
 
 .button-login {
