@@ -18,3 +18,7 @@ Requirements
 Starting WMS
 ============
 To Start WMS all you need to do is navigate to the directory (after downloading and extracting the archive) and then run `main.py`
+
+Extra Notes
+===========
+All icons from Font Awesome are Licensed under the Attribution 4.0 International (CC BY 4.0)
