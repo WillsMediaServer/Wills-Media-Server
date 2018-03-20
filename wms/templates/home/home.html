@@ -5,17 +5,39 @@
   </section>
 </header>
 <main class="mainContent">
-  <section class="profile">
+  <section class="account">
+    <h2 class="heading-1">Account</h2>
     {% if config.User.loggedIn %}
-      <h4 class="heading-3">Welcome Back {{ config.User.firstName }}!</h4>
-      <a class="link" href="/dashboard/">Dashboard</a> - <a class="link" href="/logout/">Logout</a>
+      <h4 class="subheading">Welcome Back {{ config.User.firstName }}!</h4>
+      <section class="group group-two group-buttons">
+        <a class="button button-success" href="/dashboard/">Dashboard</a>
+        <a class="button button-info" href="/logout/">Logout</a>
+      </section>
     {% else %}
-      <h4 class="heading-3">Please Register or Login</h4>
-      <section class="group group-two">
+      <h4 class="subheading">Please Register or Login</h4>
+      <section class="group group-two group-buttons">
         <a class="button button-success" href="/login/">Login</a>
         <a class="button button-info" href="/register/">Register</a>
       </section>
     {% endif %}
+  </section>
+  <section class="statistics">
+    <h4 class="heading-1">Statistics</h4>
+    <section class="group group-three">
+      <section class="stat-item">
+        <h4 class="stat-num">493</h4>
+        <h3 class="stat-name">Films</h3>
+      </section>
+      <section class="stat-item">
+        <h4 class="stat-num">76,543</h4>
+        <h3 class="stat-name">Songs</h3>
+      </section>
+      <section class="stat-item">
+        <h4 class="stat-num">2,631</h4>
+        <h3 class="stat-name">Episodes</h3>
+      </section>
+    </section>
+    <a class="button button-info button-statistics" href="/dashboard/statistics/">More Statistics</a>
   </section>
 </main>
 {% include 'includes/footer.html' %}

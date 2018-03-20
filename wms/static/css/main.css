@@ -1,9 +1,15 @@
 /* variables */
 :root {
     --colour-info: #2196f3;
-    --colour-success: #4CAF50;
-    --colour-warning: #FF9800;
+    --colour-success: #4caf50;
+    --colour-warning: #ff9800;
     --colour-danger: #f44336;
+
+    --colour-ui-main: #eeeeee;
+    --colour-ui-main-hover: #e0e0e0;
+    --colour-ui-link: #29b6f6;
+    --colour-ui-link-hover: #0288d1;
+    --colour-ui-footer: #607d8b;
 }
 
 *, *:before, *:after {
@@ -34,21 +40,31 @@ span {
   color: #424242;
 }
 
-.heading-1,
-.heading-2,
-.heading-3 {
-  line-height: 1.2;
-  padding: 1%;
+.heading-1 {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.subheading {
+  font-size: 1.5em;
+  padding: 0.5em;
+  font-weight: lighter;
+}
+
+.mainContent {
+  width: 100%;
   display: block;
 }
 
+/* Navigation Styles */
 
 nav {
   width: 100%;
   height: 10vh;
   display: flex;
   align-items: center;
-  background-color: #eee;
+  background-color: var(--colour-ui-main);
 }
 
 .navItem {
@@ -59,11 +75,12 @@ nav {
   padding: 0 25px;
   text-decoration: none;
   font-size: 1rem;
+  text-transform: capitalize;
 }
 
 .navItem.active,
 .navItem:hover {
-  background-color: #e0e0e0;
+  background-color: var(--colour-ui-main-hover);
 }
 
 .search {
@@ -79,9 +96,11 @@ nav {
   font-size: 1rem;
 }
 
+/* Header Styles */
+
 header {
   width: 100%;
-  height: 50vh;
+  height: 25vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,34 +111,48 @@ header {
   display: block;
 }
 
-.title,
-.subtitle {
-  text-align: center;
-  display: block;
-  font-weight: lighter;
-}
-
 .title {
-  font-size: 6rem;
+  text-align: center;
+  display: block;
+  font-size: 4em;
   font-weight: lighter;
 }
 
-.mainContent {
+/* Account Section Styles */
+
+.account {
+  text-align: center;
   width: 100%;
-  display: block;
+  padding: 2vw 10vw;
+  background-color: var(--colour-ui-main);
 }
 
-.profile {
-  border: 1px solid #000;
-  display: block;
-  margin: 1% auto;
+/* Statistics Section Styles */
+
+.statistics {
   text-align: center;
-  padding: 1% 3%;
-  width: 75%;
+  width: 100%;
+  padding: 1vw 0;
 }
+
+.stat-item {
+  padding: 3vw 1vw;
+}
+
+.stat-num {
+  font-weight: lighter;
+  font-size: 1.5em;
+}
+
+.stat-name {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+/* Footer Section Styles */
 
 footer {
-  background-color: #455A64;
+  background-color: var(--colour-ui-footer);
   display: block;
   height: 30vh;
   display: flex;
@@ -147,11 +180,19 @@ footer {
   cursor: pointer;
   text-decoration: none;
   font-size: 1rem;
+  text-transform: capitalize;
+  display: inline-block;
 }
 
 .button-login {
   margin: 1% auto;
   width: 80%;
+}
+
+.button-statistics {
+  display: block;
+  width: 60%;
+  margin: 2vw auto;
 }
 
 .button-info {
@@ -211,17 +252,26 @@ footer {
 .group {
   display: grid;
   grid-column-gap: 1%;
+  text-align: center;
 }
 
 .group-two {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.group-three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.group-buttons {
+  margin: 3vw 0;
+}
+
 /* Form Styles */
 
 .form {
   display: block;
-  background-color: #E0E0E0;
+  background-color: var(--colour-ui-main);
   width: 75%;
   margin: 1% auto;
   padding: 1%;
@@ -240,13 +290,13 @@ footer {
 
 /* Link Styles */
 .link {
-  color: #03a9f4;
+  color: var(--colour-ui-link);
   text-decoration: none;
   cursor: pointer;
 }
 
 .link:hover {
-  color: #0288D1;
+  color: var(--colour-ui-link-hover);
   text-decoration: underline;
 }
 
