@@ -9,6 +9,7 @@
     <h2 class="heading-1">Account</h2>
     {% if config.User.loggedIn %}
       <h4 class="subheading">Welcome Back {{ config.User.firstName }}!</h4>
+<<<<<<< HEAD
       <section class="group group-two group-buttons">
         <a class="button button-success" href="/dashboard/">Dashboard</a>
         <a class="button button-info" href="/logout/">Logout</a>
@@ -17,6 +18,10 @@
       <h4 class="subheading">Please Register or Login</h4>
       <section class="group group-two group-buttons">
 =======
+      <a class="link" href="/dashboard/">Dashboard</a> - <a class="link" href="/logout/">Logout</a>
+    {% else %}
+      <h4 class="subheading">Please Register or Login</h4>
+      <section class="group group-two">
 >>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
         <a class="button button-success" href="/login/">Login</a>
         <a class="button button-info" href="/register/">Register</a>

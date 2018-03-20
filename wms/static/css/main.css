@@ -60,6 +60,13 @@ span {
 
 /* Navigation Styles */
 =======
+}
+
+.subheading {
+  font-size: 1.5em;
+  padding: 0.5em;
+  font-weight: lighter;
+}
 >>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 
 nav {
@@ -80,6 +87,8 @@ nav {
   font-size: 1rem;
 <<<<<<< HEAD
   text-transform: capitalize;
+=======
+  text-transform: uppercase;
 >>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 }
 
@@ -125,6 +134,7 @@ header {
 <<<<<<< HEAD
 
 /* Account Section Styles */
+=======
 >>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 
 .account {
@@ -156,6 +166,11 @@ header {
   font-weight: bold;
   font-size: 1.3em;
 =======
+.account {
+  text-align: center;
+  width: 100%;
+  padding: 2vw 10vw;
+  background-color: var(--colour-ui-main);
 >>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 }
 
@@ -194,6 +209,7 @@ footer {
   text-transform: capitalize;
   display: inline-block;
 =======
+  text-transform: uppercase;
 >>>>>>> 5dd468f93dab3237449867df479ef287b5cf44e8
 }
 
