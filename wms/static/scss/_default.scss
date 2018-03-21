@@ -1,0 +1,87 @@
+//
+// Normalise Default Styles
+//
+
+//
+// Document Styles
+//
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1;
+  font-family: Arial, Helvetica, Sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: $bodyBackground;
+}
+
+// HTML5 Fix
+
+nav,
+header,
+main,
+section,
+footer {
+  display: block;
+}
+
+//
+// Typography
+//
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+// Links
+
+a {
+  color: $uiLink;
+  &:hover {
+    color: $uiLinkHover;
+    text-decoration: underline;
+  }
+}
+
+//
+// Forms
+//
+
+button,
+input,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+//
+// Other Fixes
+//
+
+// Hidden Fix
+
+[hidden] {
+  display: none !important;
+}
