@@ -1,5 +1,5 @@
 __pycache__/
-Test Files/
+.sass-cache/
 config.ini
 start.bat
 *.db
