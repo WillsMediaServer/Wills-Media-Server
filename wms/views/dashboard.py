@@ -17,3 +17,8 @@ class dashboardBlueprint:
         def settingsHomePage():
             pageConfig = security.pageData(self.configData, database)
             return render_template("dashboard/settings.html", pageName="Settings", config=pageConfig)
+
+        @dashboard.route("/statistics/")
+        def statisticsPage():
+            pageConfig = security.pageData(self.configData, database)
+            return render_template("dashboard/statistics.html", pageName="Statistics", config=pageConfig)
