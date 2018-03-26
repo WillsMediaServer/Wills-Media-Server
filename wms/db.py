@@ -22,11 +22,5 @@ class User(db.Model):
     firstName = db.Column("firstName", db.String(255))
     lastName = db.Column("lastName", db.String(255))
     fullName = db.column_property(firstName + " " + lastName)
-    email = db.Column("email", db.String(255))
-
-class Permission(db.Model):
-    __bind_key__ = "users"
-    __tablename__ = "permissions"
-    id = db.Column("permissionID", db.Integer, primary_key=True)
-    level = db.Column("level", db.Integer)
-    levelName = db.Column("levelName", db.String(64))
+    email = db.Column("email", db.String(255), unique=True)
+    permission = db.Column("permission", db.Integer)
