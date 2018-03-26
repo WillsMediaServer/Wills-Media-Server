@@ -24,3 +24,28 @@ class User(db.Model):
     fullName = db.column_property(firstName + " " + lastName)
     email = db.Column("email", db.String(255), unique=True)
     permission = db.Column("permission", db.Integer)
+
+# tables for the Music Database
+
+class Artists(db.Model):
+    __bind_key__ = "music"
+    __tablename__ = "artists"
+    id = db.Column("artistID", db.Integer, primary_key=True)
+    name = db.Column("name", db.String(255))
+    description = db.Column("description", db.TEXT)
+
+class Albums(db.Model):
+    __bind_key__ = "music"
+    __tablename__ = "albums"
+    id = db.Column("albumID", db.Integer, primary_key=True)
+    artistId = db.Column("artistID", db.Integer)
+    name = db.Column("name", db.String(255))
+    releaseDate = db.Column("releaseDate", db.DATE)
+    genreId =
+    picture
+
+class Songs(db.Model):
+    __bind_key__ = "music"
+    __tablename__ = "songs"
+    id = db.Column("songID", db.Integer, primary_key=True)
+    albumId = db.Column("albumID", db.Integer)
