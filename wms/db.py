@@ -3,6 +3,7 @@ import logging
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
+# Server settings table
 class ServerSettings(db.Model):
     __bind_key__ = "main"
     __tablename__ = "serverSettings"
@@ -16,7 +17,7 @@ class ServerSettings(db.Model):
 class User(db.Model):
     __bind_key__ = "users"
     __tablename__ = "user"
-    id = db.Column("userID", db.Integer, primary_key=True)
+    id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column("username", db.String(255), unique=True)
     password = db.Column("password", db.String(255))
     firstName = db.Column("firstName", db.String(255))
@@ -30,22 +31,37 @@ class User(db.Model):
 class Artists(db.Model):
     __bind_key__ = "music"
     __tablename__ = "artists"
-    id = db.Column("artistID", db.Integer, primary_key=True)
+    id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(255))
     description = db.Column("description", db.TEXT)
+    albums = db.relationship("Albums", backref="artists", lazy=True)
+    songs = db.relationship("Songs", backref="artists", lazy=True)
 
 class Albums(db.Model):
     __bind_key__ = "music"
     __tablename__ = "albums"
-    id = db.Column("albumID", db.Integer, primary_key=True)
-    artistId = db.Column("artistID", db.Integer)
+    id = db.Column("id", db.Integer, primary_key=True)
+    artist = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
     name = db.Column("name", db.String(255))
     releaseDate = db.Column("releaseDate", db.DATE)
-    genreId =
-    picture
+    genre = db.Column("genre", db.Integer, db.ForeignKey("genres.id"), nullable=False)
+    picture = db.Column("picture", db.TEXT)
+    songs = db.relationship("Songs", backref="albums", lazy=True)
 
 class Songs(db.Model):
     __bind_key__ = "music"
     __tablename__ = "songs"
-    id = db.Column("songID", db.Integer, primary_key=True)
-    albumId = db.Column("albumID", db.Integer)
+    id = db.Column("id", db.Integer, primary_key=True)
+    name = db.Column("name", db.String(255))
+    album = db.Column("album", db.Integer, db.ForeignKey("albums.id"), nullable=False)
+    artist = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    length = db.Column("length", db.TIME)
+    location = db.Column("location", db.TEXT)
+
+class Genres(db.Model):
+    __bind_key__ = "music"
+    __tablename__ = "genres"
+    id = db.Column("id", db.Integer, primary_key=True)
+    name = db.Column("name", db.String(255))
+    description = db.Column("description", db.TEXT)
+    albums = db.relationship("Albums", backref="genres", lazy=True)
