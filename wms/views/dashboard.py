@@ -22,3 +22,15 @@ class dashboardBlueprint:
         def statisticsPage():
             pageConfig = security.pageData(self.configData, database)
             return render_template("dashboard/statistics.html", pageName="Statistics", config=pageConfig)
+
+        @dashboard.route("/profile/")
+        def userProfilePage():
+            pageConfig = security.pageData(self.configData, database)
+            if pageConfig["User"]["loggedIn"] == False:
+                pageConfig["User"]["username"] = ""
+            return render_template("dashboard/profile.html", pageName="Your Profile", config=pageConfig, user=pageConfig["User"]["username"])
+
+        @dashboard.route("/profile/<username>")
+        def profilePage(username):
+            pageConfig = security.pageData(self.configData, database)
+            return render_template("dashboard/profile.html", pageName=username+"'s Profile'", config=pageConfig, user=username)
