@@ -57,6 +57,7 @@ class Songs(db.Model):
     artist = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
     length = db.Column("length", db.TIME)
     location = db.Column("location", db.TEXT)
+    filename = db.Column("filename", db.TEXT)
 
 class Genres(db.Model):
     __bind_key__ = "music"

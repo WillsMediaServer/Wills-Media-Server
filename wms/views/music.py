@@ -12,3 +12,12 @@ class musicBlueprint:
         def musicHomePage():
             pageConfig = security.pageData(self.configData, database)
             return render_template("music/music.html", pageName="Music", config=pageConfig)
+
+        @music.route("/play/<int:id>")
+        def playSong(id):
+            songData = database.Songs.query.filter_by(id=id).first()
+            pageConfig = security.pageData(self.configData, database)
+            if songData == None:
+                return render_template("music/noExist.html", pageName="Song Doesn't Exist", config=pageConfig)
+            else:
+                return render_template("music/play.html", pageName="Music", config=pageConfig, id=id, song=songData)
