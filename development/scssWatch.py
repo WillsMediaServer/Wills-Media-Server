@@ -6,4 +6,4 @@ BASE_DIR = normpath(join(dirname(abspath(__file__)), ".."))
 inputDir = join(BASE_DIR, "wms", "static", "scss")
 outputDir = join(BASE_DIR, "wms", "static", "css")
 
-system("sass --watch '" + join(inputDir, "main.scss") + "':'" + join(outputDir, "main-dev.css") + "'")
+system("sass --watch '" + join(inputDir, "main.scss") + "':'" + join(outputDir, "main-dev.css") + "' --style expanded")
