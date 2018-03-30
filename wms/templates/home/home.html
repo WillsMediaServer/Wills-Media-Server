@@ -1,29 +1,23 @@
 {% include 'includes/header.html' %}
-<header>
-  <section class="headerContent">
-    <h1 class="title">{{ config.General.fullname }}</h1>
-  </section>
+<header class="header">
+  <h1 class="display-1">{{ config.General.fullname }}</h1>
 </header>
-<main class="mainContent">
+<main>
   <section class="account">
-    <h2 class="heading-1">Account</h2>
+    <h2>Account</h2>
     {% if config.User.loggedIn %}
-      <h4 class="subheading">Welcome Back {{ config.User.firstName }}!</h4>
-      <section class="group group-two group-buttons">
-        <a class="button button-success" href="/dashboard/">Dashboard</a>
-        <a class="button button-info" href="/logout/">Logout</a>
-      </section>
+      <h4 class="font-light">Welcome Back {{ config.User.firstName }}!</h4>
+      <a class="button button-success" href="/dashboard/">Dashboard</a>
+      <a class="button button-info" href="/logout/">Logout</a>
     {% else %}
-      <h4 class="subheading">Please Register or Login</h4>
-      <section class="group group-two">
-        <a class="button button-success" href="/login/">Login</a>
-        <a class="button button-info" href="/register/">Register</a>
-      </section>
+      <h4 class="font-light">Please Register or Login</h4>
+      <a class="button button-success" href="/login/">Login</a>
+      <a class="button button-info" href="/register/">Register</a>
     {% endif %}
   </section>
   <section class="statistics">
-    <h4 class="heading-1">Statistics</h4>
-    <section class="group group-three">
+    <h4>Statistics</h4>
+    <section class="stats">
       <section class="stat-item">
         <h4 class="stat-num">493</h4>
         <h3 class="stat-name">Films</h3>

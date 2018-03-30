@@ -1,8 +1,6 @@
 {% include 'includes/header.html' %}
-<header>
-  <section class="headerContent">
-    <h1 class="title">{{ config.General.fullname }}</h1>
-  </section>
+<header class="header">
+  <h1 class="display-1">{{ config.General.fullname }}</h1>
 </header>
 <main class="mainContent">
   {% if config.User.loggedIn %}

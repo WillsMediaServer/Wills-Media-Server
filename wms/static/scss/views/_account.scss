@@ -1,0 +1,12 @@
+//
+// Styles for Login and Registration views
+//
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $lightGray;
+  text-align: center;
+  padding: 1rem;
+}

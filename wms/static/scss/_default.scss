@@ -17,11 +17,15 @@ html {
   font-family: Arial, Helvetica, Sans-serif;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  font-size: 100%;
 }
 
 body {
   margin: 0;
   background-color: $bodyBackground;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 // HTML5 Fix
@@ -46,6 +50,7 @@ h5,
 h6,
 p {
   margin: 0;
+  line-height: 1.2;
 }
 
 b,

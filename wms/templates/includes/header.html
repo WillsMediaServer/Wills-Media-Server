@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config.General.shortname }} | {{ pageName }}</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main-dev.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='js/css-var.polyfill.js') }}"></script>
   </head>
   <body>
-    <nav>
+    <nav class="navigation">
       {% for href, page in [("/", "Home"),("/music/", "Music"),("/films/","Films"),("/tv/","TV Shows")]: %}
         {% if page == pageName %}
           <a class="navItem active" href="{{ href }}">{{ page }}</a>
         {% else %}
-          <a  class="navItem" href="{{ href }}">{{ page }}</a>
+          <a class="navItem" href="{{ href }}">{{ page }}</a>
         {% endif %}
       {% endfor %}
       <section class="search">
         <input class="searchbar" type="search" placeholder="Search...">
       </section>
+      <span class="icon iconAccount"></span>
     </nav>

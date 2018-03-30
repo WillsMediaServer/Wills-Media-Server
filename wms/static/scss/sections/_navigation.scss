@@ -1,0 +1,50 @@
+// Navigation
+
+.navigation {
+  width: 100%;
+  background-color: $info;
+  display: flex;
+}
+
+.navItem {
+  display: inline-block;
+  color: $white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 1.5rem;
+  &:hover,
+  &:active,
+  &.active {
+    color: $white;
+    background: $info-dark;
+    text-decoration: none;
+  }
+}
+
+.search {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchbar {
+  width: 100%;
+  padding: 6px;
+  border: none;
+  font-size: 1rem;
+}
+
+.icon {
+  display: inline-flex;
+  width: 3rem;
+  height: 3rem;
+  margin: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.iconAccount {
+  background: url("../img/user-circle.svg") no-repeat 0;
+}

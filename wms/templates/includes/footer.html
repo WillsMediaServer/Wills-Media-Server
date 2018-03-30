@@ -1,12 +1,9 @@
-    <footer>
-      <span class="footer-content">
-        <p class="copyright">Copyright &copy; 2017 William Neild All Rights Reserved.</p><br>
-        <a class="link link-footer" href="{{ config.Request.rootURL }}">Home</a>
-        {% if session["loggedIn"] %}
-          - <a class="link link-footer" href="{{ config.Request.rootURL }}dashboard/settings/">Settings</a>
-        {% endif %}
-      </span>
+    <footer class="footer">
+      <p class="copyright">Copyright &copy; 2017 William Neild All Rights Reserved.</p><br>
+      <a href="{{ config.Request.rootURL }}">Home</a>
+      {% if config.User.loggedIn %}
+        - <a href="{{ config.Request.rootURL }}dashboard/settings/">Settings</a>
+      {% endif %}
     </footer>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>

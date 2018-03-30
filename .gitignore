@@ -1,6 +1,6 @@
 __pycache__/
 .sass-cache/
 config.ini
-start.bat
+*.bat
 *.db
 *.log
