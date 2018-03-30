@@ -60,15 +60,15 @@ from .views import home, dashboard, music, films, tv
 homeBlueprint = home.homeBlueprint(config, database, security)
 dashboardBlueprint = dashboard.dashboardBlueprint(config, database, security)
 musicBlueprint = music.musicBlueprint(config, database, security)
+filmsBlueprint = films.filmsBlueprint(config, database, security)
+tvBlueprint = tv.tvBlueprint(config, database, security)
 
 # Register Flask Blueprints
 app.register_blueprint(homeBlueprint.home)
 app.register_blueprint(dashboardBlueprint.dashboard)
 app.register_blueprint(musicBlueprint.music)
-
-# TODO: Implement These below
-# app.register_blueprint(films)
-# app.register_blueprint(tv)
+app.register_blueprint(filmsBlueprint.films)
+app.register_blueprint(tvBlueprint.tv)
 
 # Initialise SQLAlchemy Databases
 database.db.init_app(app)
