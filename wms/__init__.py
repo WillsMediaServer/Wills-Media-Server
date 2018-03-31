@@ -41,6 +41,12 @@ except Exception as error:
 # Initialise flask
 app = Flask(__name__)
 
+# make server header to wms
+@app.after_request
+def customiseHeaders(response):
+    response.headers["Server"] = "Wills Media Server v0.0.1"
+    return response
+
 # configure sqlalchemy withy flask
 app.config["SQLALCHEMY_DATABASE_URI"] = str("sqlite:///" + join(BASE_DIR, "database", "main.db"))
 app.config["SQLALCHEMY_BINDS"] = {
