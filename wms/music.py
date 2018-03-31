@@ -2,6 +2,7 @@ import os, logging
 
 class Search:
     def __init__(self, paths, supportedExt=[".mp3", ".wav", ".ogg"]):
+        paths = paths[0].split(",")
         songs = []
         for path in paths:
             for dir, subdir, files in os.walk(path):
