@@ -1,0 +1,29 @@
+//
+// Styles for the music view
+//
+
+.musicTable {
+  width: 90%;
+  margin: 0 5%;
+}
+
+.musicTableRow,
+.musicTableHead {
+  border: 1px solid #000;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.musicTableHead {
+  background-color: $info;
+  color: $white;
+}
+
+.musicTableRow:nth-child(even) {
+  background-color: $lightGray;
+}
+
+.musicTableHead th,
+.musicTableRow td {
+  padding: 1.5rem;
+}

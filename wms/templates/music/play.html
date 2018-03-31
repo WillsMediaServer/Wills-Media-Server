@@ -1,7 +1,7 @@
 {% include 'includes/header.html' %}
 <main>
-  <h1>Play song with ID: {{ id }}</h1>
-  <audio controls>
+  <h1>{{ song.name }}</h1>
+  <audio controls autoplay>
     <source src="{{ url_for("music.getSong", id=id) }}">
   </audio>
 </main>

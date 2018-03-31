@@ -1,5 +1,11 @@
 {% include 'includes/header.html' %}
 <main>
-  <h1>Music</h1>
+  <h1 class="center">Music</h1>
+  <table class="musicTable">
+    <tr class="musicTableHead"><th>ID</th><th>Song</th></tr>
+    {% for song in songs %}
+    <tr class="musicTableRow"><td>{{ song.id }}</td><td><a href="{{ config.Request.rootURL }}music/play/{{ song.id }}">{{ song.name }}</a></td></tr>
+    {% endfor %}
+  </table>
 </main>
 {% include 'includes/footer.html' %}

@@ -16,6 +16,7 @@ class Config:
         config = configparser.ConfigParser()
         config['General'] = {'fullname': 'Will\'s Media Server',
                              'shortname': 'WMS'}
+        config["Media"] = {'musicPath':"E:\Music"}
         config['Server'] = {'hostname':'0.0.0.0',
                             'port':8080}
         config['Security'] = {'salt':str(uuid.uuid4())}
