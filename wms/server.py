@@ -9,4 +9,6 @@ class Server:
 
     def runServer(self, app):
         app.secret_key = self.configData["Security"]["salt"]
-        app.run(self.configData["Server"]["hostname"], int(self.configData["Server"]["port"]))
+        host = self.configData["Server"]["hostname"]
+        port = int(self.configData["Server"]["port"])
+        app.run(host=host, port=port, threaded=True)
