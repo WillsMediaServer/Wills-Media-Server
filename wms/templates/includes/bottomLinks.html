@@ -1,0 +1,5 @@
+    {% for jsName in loadJS %}
+      <script type="text/javascript" src="{{ url_for("static", filename='js/' + jsName) }}"></script>
+    {% endfor %}
+  </body>
+</html>

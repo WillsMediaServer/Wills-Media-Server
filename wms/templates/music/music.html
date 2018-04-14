@@ -1,11 +1,15 @@
 {% include 'includes/header.html' %}
 <main>
   <h1 class="center">Music</h1>
-  <table class="musicTable">
-    <tr class="musicTableHead"><th>ID</th><th>Song</th></tr>
     {% for song in songs %}
-    <tr class="musicTableRow"><td>{{ song.id }}</td><td><a href="{{ config.Request.rootURL }}music/play/{{ song.id }}">{{ song.name }}</a></td></tr>
+    <section class="square">
+      <article class="background" style="background-image: url('https://orig00.deviantart.net/5162/f/2014/153/9/e/no_album_art__no_cover___placeholder_picture_by_cmdrobot-d7kpm65.jpg')"></article>
+      <article class="details">
+        <p class="song">{{ song.name }}</p>
+        <p class="artist">{{ song.artist.name }}</p>
+      </article>
+      <article class="more"><a class="playBtn" href="{{ config.Request.rootURL }}music/play/{{ song.id }}"></a></article>
+    </section>
     {% endfor %}
-  </table>
 </main>
 {% include 'includes/footer.html' %}

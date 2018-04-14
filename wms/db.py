@@ -34,27 +34,27 @@ class Artists(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(255))
     description = db.Column("description", db.TEXT)
-    albums = db.relationship("Albums", backref="artists", lazy=True)
-    songs = db.relationship("Songs", backref="artists", lazy=True)
+    albums = db.relationship("Albums", backref="artist", lazy=True)
+    songs = db.relationship("Songs", backref="artist", lazy=True)
 
 class Albums(db.Model):
     __bind_key__ = "music"
     __tablename__ = "albums"
     id = db.Column("id", db.Integer, primary_key=True)
-    artist = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    artistId = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
     name = db.Column("name", db.String(255))
     releaseDate = db.Column("releaseDate", db.DATE)
-    genre = db.Column("genre", db.Integer, db.ForeignKey("genres.id"), nullable=False)
+    genreId = db.Column("genre", db.Integer, db.ForeignKey("genres.id"), nullable=False)
     picture = db.Column("picture", db.TEXT)
-    songs = db.relationship("Songs", backref="albums", lazy=True)
+    songs = db.relationship("Songs", backref="album", lazy=True)
 
 class Songs(db.Model):
     __bind_key__ = "music"
     __tablename__ = "songs"
     id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(255))
-    album = db.Column("album", db.Integer, db.ForeignKey("albums.id"), nullable=False)
-    artist = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    albumId = db.Column("album", db.Integer, db.ForeignKey("albums.id"), nullable=False)
+    artistId = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
     length = db.Column("length", db.TIME)
     location = db.Column("location", db.TEXT)
 
@@ -64,4 +64,4 @@ class Genres(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(255))
     description = db.Column("description", db.TEXT)
-    albums = db.relationship("Albums", backref="genres", lazy=True)
+    albums = db.relationship("Albums", backref="genre", lazy=True)

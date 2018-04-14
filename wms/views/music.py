@@ -22,7 +22,6 @@ class musicBlueprint:
         def updateMusicLibrary():
             paths = []
             paths.append(os.path.abspath(self.configData["Media"]["musicpath"]))
-            print(paths)
             data = Search(paths)
             songs = data.songs
             for songPath in songs:
@@ -30,11 +29,20 @@ class musicBlueprint:
                 checkData = database.Songs.query.filter_by(location=songPath).first()
                 if checkData == None:
                     name = os.path.basename(songPath).rsplit(".",1)[0]
-                    item = database.Songs(name=name,album=1,artist=1,length=datetime.time(second=0),location=songPath)
+                    item = database.Songs(name=name,albumId=1,artistId=1,length=datetime.time(second=0),location=songPath)
                     database.db.session.add(item)
                     logging.debug("Adding Song: " + name)
                 else:
                     logging.debug("Song Already exists. Skipping...")
+            if database.Genres.query.filter_by(id=1).first() == None:
+                genere = database.Genres(name="Unknown Genre")
+                database.db.session.add(genere)
+            if database.Artists.query.filter_by(id=1).first() == None:
+                artist = database.Artists(name="Unknown Artist")
+                database.db.session.add(artist)
+            if database.Albums.query.filter_by(id=1).first() == None:
+                album = database.Albums(name="Unknown Album", artistId=1, genreId=1)
+                database.db.session.add(album)
             database.db.session.commit()
             return "OK"
 
@@ -66,4 +74,4 @@ class musicBlueprint:
                 return render_template("music/noExist.html", pageName="Song Doesn't Exist", config=pageConfig)
                 logging.log("Song with the id of "+id+" not Found")
             else:
-                return render_template("music/play.html", pageName="Music", config=pageConfig, id=id, song=songData)
+                return render_template("music/play.html", pageName="Music", config=pageConfig, id=id, song=songData, loadJS=["musicPlayer.js"])
