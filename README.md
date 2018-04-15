@@ -23,5 +23,5 @@ To Start WMS all you need to do is navigate to the directory (after downloading 
 
 Extra Notes
 ===========
-All icons from Font Awesome are Licensed under the Attribution 4.0 International (CC BY 4.0)
-No Media (appart from any logos or icons used in the design) are included with Wills Media Server, you will need to provide your own
+- All icons from Font Awesome are Licensed under the Attribution 4.0 International (CC BY 4.0)
+- No Media (appart from any logos or icons used in the design) are included with Wills Media Server, you will need to provide your own
