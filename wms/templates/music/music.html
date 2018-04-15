@@ -3,7 +3,7 @@
   <h1 class="center">Music</h1>
     {% for song in songs %}
     <section class="square">
-      <article class="background" style="background-image: url('https://orig00.deviantart.net/5162/f/2014/153/9/e/no_album_art__no_cover___placeholder_picture_by_cmdrobot-d7kpm65.jpg')"></article>
+      <article class="background" style="background-image: url({{ url_for("music.getImage", id=song.id) }})"></article>
       <article class="details">
         <p class="song">{{ song.name }}</p>
         <p class="artist">{{ song.artist.name }}</p>

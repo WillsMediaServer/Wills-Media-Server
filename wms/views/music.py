@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, request, session, redirect, Response, stream_with_context, make_response
+from flask import Blueprint, render_template, request, session, redirect, Response, stream_with_context, make_response, send_file
 from werkzeug.datastructures import Headers
 from wms.music import Search
 
 import os, datetime, logging
+from os.path import join, dirname, abspath, normpath
+BASE_DIR = normpath(join(dirname(abspath(__file__)), ".."))
 
 class musicBlueprint:
     def __init__(self, config, database, security):
@@ -45,6 +47,11 @@ class musicBlueprint:
                 database.db.session.add(album)
             database.db.session.commit()
             return "OK"
+
+        @music.route("/get/img/<int:id>")
+        def getImage(id):
+            filename = join(BASE_DIR, "static", "img", "blankAudio.png")
+            return send_file(filename, mimetype="image/*")
 
         @music.route("/get/song/<int:id>")
         def getSong(id):
