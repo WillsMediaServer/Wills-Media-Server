@@ -43,29 +43,44 @@ tagsList["audio/x-vorbis"] = tagsList["audio/vorbis"]
 tagsList["application/ogg"] = tagsList["audio/vorbis"]
 tagsList["application/x-ogg"] = tagsList["audio/vorbis"]
 
-# print(sorted(tagsList))
 
-def meta(filename, option):
+def meta(filename, options):
     audioFile = mutagen.File(filename)
-    #print(audioFile.tags)
 
     if audioFile == None:
         return None
 
     audioFileMime = audioFile.mime[0]
+    returnData = []
     if audioFileMime in tagsList:
-        formatSpecificName = tagsList[audioFileMime][option]
-        if formatSpecificName == None:
-            return None
-        else:
-            try:
-                metadata = audioFile.tags.get(formatSpecificName)
-                if isinstance(metadata, (list, tuple,)):
-                    metadata = metadata[0]
-                if (option == "release"):
-                    metadata = re.findall("\d{4}", str(metadata))[0]
-
-                return metadata
-            except Exception as e:
-                print(e)
+        for option in options:
+            formatSpecificName = tagsList[audioFileMime][option]
+            if formatSpecificName == None:
                 return None
+            else:
+                try:
+                    metadata = audioFile.tags.get(formatSpecificName)
+
+                    try:
+                        metadata = metadata[0]
+                    except Exception as e:
+                        metadata = metadata
+
+                    if (option == "release"):
+                        metadata = re.findall("\d{4}", str(metadata))[0]
+
+                    if (option == "track"):
+                        if "/" in metadata:
+                            metadata = metadata.split("/")[0]
+                            try:
+                                metadata = int(metadata)
+                            except Exception as e:
+                                metadata = metadata
+
+                    returnData.append(metadata)
+                except Exception as e:
+                    print(e)
+                    return None
+        return returnData
+    else:
+        return None

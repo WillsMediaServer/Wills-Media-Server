@@ -1,10 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os.path import join, dirname, abspath, normpath
-import mutagen
-import db
+from wmsMeta.meta import meta
+import mutagen, sys
 
-BASE_DIR = r"B:/WMS/WMS-Core/"
+BASE_DIR = normpath(join(dirname(abspath(__file__)), "..", ".."))
+sys.path.insert(1, join(BASE_DIR, "wms"))
+
+import db
 
 database = db.db
 Songs = db.Songs
@@ -22,15 +25,12 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 @app.route("/")
 def testPage():
-    song = Songs.query.all()[0]
-    audioFile = mutagen.File(song.location)
-    print(audioFile)
-    # songsList = Songs.query.all()
-    # for song in songsList:
-    #     location = song.location
-    #     audioFile = mutagen.File(location)
-    #     print(dir(audioFile))
-    return "Hello World"
+    songs = Songs.query.all()
+    data = []
+    for song in songs:
+        metadata = meta(song.location, ["title", "artist", "track", "album"])
+        data.append(metadata)
+    return str(data)
 
 database.init_app(app)
 database.create_all(app=app)

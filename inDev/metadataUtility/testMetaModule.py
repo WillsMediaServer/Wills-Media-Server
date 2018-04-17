@@ -1,5 +1,4 @@
 from wmsMeta.meta import meta, tagsList
-import mutagen
 
 # MP3 Format Test
 
