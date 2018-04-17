@@ -4,3 +4,4 @@ config.ini
 *.bat
 *.db
 *.log
+*.pyc
