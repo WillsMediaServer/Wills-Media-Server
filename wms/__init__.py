@@ -12,73 +12,76 @@ from flask_sqlalchemy import SQLAlchemy
 # Set BASE_DIR variable
 BASE_DIR = normpath(join(dirname(abspath(__file__)), ".."))
 
-# grab all files/modules needed for wms
-from wms import db
-from wms.config import Config
-from wms.security import Security
-from wms.server import Server
-import logging, sys, time
+# start wms
 
-database = db
+def start():
+    # grab all files/modules needed for wms
+    from wms import db
+    from wms.config import Config
+    from wms.security import Security
+    from wms.server import Server
+    import logging, sys, time
 
-# Setup logging to both file and terminal
-try:
-    file_location = join(BASE_DIR, "logs", "main.log")
-    print("Logs file stored at: " + str(file_location))
-    file_handler = logging.FileHandler(filename=str(file_location))
-    stdout_handler = logging.StreamHandler(sys.stdout)
-    handlers = [file_handler, stdout_handler]
-    logging.basicConfig(
-        level = logging.DEBUG,
-        format = "[%(asctime)s] [%(levelname)s] %(message)s",
-        datefmt = "%d-%m-%Y %H:%M:%S",
-        handlers = handlers
-    )
-except Exception as error:
-    print("Error: " + str(error))
-    sys.exit()
+    database = db
 
-# Initialise flask
-app = Flask(__name__)
+    # Setup logging to both file and terminal
+    try:
+        file_location = join(BASE_DIR, "logs", "main.log")
+        print("Logs file stored at: " + str(file_location))
+        file_handler = logging.FileHandler(filename=str(file_location))
+        stdout_handler = logging.StreamHandler(sys.stdout)
+        handlers = [file_handler, stdout_handler]
+        logging.basicConfig(
+            level = logging.DEBUG,
+            format = "[%(asctime)s] [%(levelname)s] %(message)s",
+            datefmt = "%d-%m-%Y %H:%M:%S",
+            handlers = handlers
+        )
+    except Exception as error:
+        print("Error: " + str(error))
+        sys.exit()
 
-# make server header to wms
-@app.after_request
-def customiseHeaders(response):
-    response.headers["Server"] = "Wills Media Server v0.0.1"
-    return response
+    # Initialise flask
+    app = Flask(__name__)
 
-# configure sqlalchemy withy flask
-app.config["SQLALCHEMY_DATABASE_URI"] = str("sqlite:///" + join(BASE_DIR, "database", "main.db"))
-app.config["SQLALCHEMY_BINDS"] = {
-    "users": str('sqlite:///' + join(BASE_DIR, "database", "users.db")),
-    "music": str('sqlite:///' + join(BASE_DIR, "database", "libraries", "music.db")),
-    "films": str('sqlite:///' + join(BASE_DIR, "database", "libraries", "films.db")),
-    "tv": str('sqlite:///' + join(BASE_DIR, "database", "libraries", "tv.db"))
-}
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # make server header to wms
+    @app.after_request
+    def customiseHeaders(response):
+        response.headers["Server"] = "Wills Media Server v0.0.1"
+        return response
 
-# Load Required core config
-config = Config()
-security = Security(config)
+    # configure sqlalchemy withy flask
+    app.config["SQLALCHEMY_DATABASE_URI"] = str("sqlite:///" + join(BASE_DIR, "database", "main.db"))
+    app.config["SQLALCHEMY_BINDS"] = {
+        "users": str('sqlite:///' + join(BASE_DIR, "database", "users.db")),
+        "music": str('sqlite:///' + join(BASE_DIR, "database", "libraries", "music.db")),
+        "films": str('sqlite:///' + join(BASE_DIR, "database", "libraries", "films.db")),
+        "tv": str('sqlite:///' + join(BASE_DIR, "database", "libraries", "tv.db"))
+    }
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Add all flask views
-from .views import home, dashboard, music, films, tv
-homeBlueprint = home.homeBlueprint(config, database, security)
-dashboardBlueprint = dashboard.dashboardBlueprint(config, database, security)
-musicBlueprint = music.musicBlueprint(config, database, security)
-filmsBlueprint = films.filmsBlueprint(config, database, security)
-tvBlueprint = tv.tvBlueprint(config, database, security)
+    # Load Required core config
+    config = Config()
+    security = Security(config)
 
-# Register Flask Blueprints
-app.register_blueprint(homeBlueprint.home)
-app.register_blueprint(dashboardBlueprint.dashboard)
-app.register_blueprint(musicBlueprint.music)
-app.register_blueprint(filmsBlueprint.films)
-app.register_blueprint(tvBlueprint.tv)
+    # Add all flask views
+    from .views import home, dashboard, music, films, tv
+    homeBlueprint = home.homeBlueprint(config, database, security)
+    dashboardBlueprint = dashboard.dashboardBlueprint(config, database, security)
+    musicBlueprint = music.musicBlueprint(config, database, security)
+    filmsBlueprint = films.filmsBlueprint(config, database, security)
+    tvBlueprint = tv.tvBlueprint(config, database, security)
 
-# Initialise SQLAlchemy Databases
-database.db.init_app(app)
-database.db.create_all(app=app)
+    # Register Flask Blueprints
+    app.register_blueprint(homeBlueprint.home)
+    app.register_blueprint(dashboardBlueprint.dashboard)
+    app.register_blueprint(musicBlueprint.music)
+    app.register_blueprint(filmsBlueprint.films)
+    app.register_blueprint(tvBlueprint.tv)
 
-# Start the Web UI
-server = Server(app, config)
+    # Initialise SQLAlchemy Databases
+    database.db.init_app(app)
+    database.db.create_all(app=app)
+
+    # Start the Web UI
+    server = Server(app, config)
