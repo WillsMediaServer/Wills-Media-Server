@@ -5,6 +5,7 @@ LIB_DIR = normpath(join(dirname(abspath(__file__)), ".."))
 
 class Wrapper:
     def __init__(self):
+        logging.info("Initialising ffmpeg")
         try:
             logging.info("Attempting to use ffmpeg from path")
             data = subprocess.Popen(["ffmpeg", "-version"], stdout=subprocess.PIPE)
