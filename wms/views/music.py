@@ -67,10 +67,24 @@ class musicBlueprint:
                 metadata = json.loads(ffmpeg.metadata(location, ["title", "artist", "album"]))
                 if metadata["title"] != None:
                     song.name = metadata["title"]
-                    pass
 
                 if metadata["artist"] != None:
-                    pass
+                    artistExistCheck = database.Artists.query.filter_by(name=metadata["artist"]).first()
+                    if artistExistCheck == None:
+                        artistNames = metadata["artist"].split(";")
+                        artistIds = []
+                        for artistName in artistNames:
+                            artist = database.Artists(name=artistName.lstrip())
+                            database.db.session.add(artist)
+                        database.db.session.commit()
+                        for artistName in artistNames:
+                            artist = database.Artists.query.filter_by(name=artistName.lstrip()).first()
+                            if artist != None:
+                                artistIds.append(artist.id)
+                        song.artistId = artistIds[0]
+                    if artistExistCheck != None:
+                        if song.artistId != artistExistCheck.id:
+                            song.artistId = artistExistCheck.id
 
                 if metadata["album"] != None:
                     pass
@@ -80,7 +94,6 @@ class musicBlueprint:
         @music.route("/get/img/<int:imgId>")
         def getImage(imgId):
             audioImage = database.AudioImages.query.filter_by(id=imgId).first()
-            print(audioImage)
             if audioImage == None:
                 filename = join(BASE_DIR, "wms", "static", "img", "blankAudio.png")
                 return send_file(filename, mimetype="image/png")
