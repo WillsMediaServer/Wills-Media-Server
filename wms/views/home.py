@@ -12,7 +12,11 @@ class homeBlueprint:
         @home.route("/")
         def homePage():
             pageConfig = security.pageData(self.configData, database)
-            return render_template("home/home.html", pageName="Home", config=pageConfig)
+            statistics = {}
+            statistics["films"] = 0
+            statistics["songs"] = database.Songs.query.count()
+            statistics["episodes"] = 0
+            return render_template("home/home.html", pageName="Home", config=pageConfig, stats=statistics)
 
         @home.route("/login/", methods=["GET"])
         def loginPage():

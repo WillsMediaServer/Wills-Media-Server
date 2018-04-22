@@ -19,19 +19,19 @@
     <h4>Statistics</h4>
     <section class="stats">
       <section class="stat-item">
-        <h4 class="stat-num">493</h4>
+        <h4 class="stat-num">{{ stats.films }}</h4>
         <h3 class="stat-name">Films</h3>
       </section>
       <section class="stat-item">
-        <h4 class="stat-num">76,543</h4>
+        <h4 class="stat-num">{{ stats.songs }}</h4>
         <h3 class="stat-name">Songs</h3>
       </section>
       <section class="stat-item">
-        <h4 class="stat-num">2,631</h4>
+        <h4 class="stat-num">{{ stats.episodes }}</h4>
         <h3 class="stat-name">Episodes</h3>
       </section>
     </section>
-    <a class="button button-info button-statistics" href="/dashboard/statistics/">More Statistics</a>
+    <!-- <a class="button button-info button-statistics" href="/dashboard/statistics/">More Statistics</a> -->
   </section>
 </main>
 {% include 'includes/footer.html' %}
