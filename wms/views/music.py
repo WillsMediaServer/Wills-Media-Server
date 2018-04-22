@@ -2,9 +2,14 @@ from flask import Blueprint, render_template, request, session, redirect, Respon
 from werkzeug.datastructures import Headers
 from wms.music import Search
 
-import os, datetime, logging, base64, io
+import os, datetime, logging, base64, io, sys, json
 from os.path import join, dirname, abspath, normpath
-BASE_DIR = normpath(join(dirname(abspath(__file__)), ".."))
+BASE_DIR = normpath(join(dirname(abspath(__file__)), "..", ".."))
+
+sys.path.insert(1, join(BASE_DIR, "libs"))
+
+from ffmpegWrapper.wrapper import Wrapper
+ffmpeg = Wrapper()
 
 class musicBlueprint:
     def __init__(self, config, database, security):
@@ -20,7 +25,7 @@ class musicBlueprint:
             pageConfig = security.pageData(self.configData, database)
             return render_template("music/music.html", pageName="Music", config=pageConfig, songs=songsList)
 
-        @music.route("/update")
+        @music.route("/update/library")
         def updateMusicLibrary():
             paths = []
             paths.append(os.path.abspath(self.configData["Media"]["musicpath"]))
@@ -37,7 +42,7 @@ class musicBlueprint:
                 else:
                     logging.debug("Song Already exists. Skipping...")
             if database.AudioImages.query.filter_by(id=1).first() == None:
-                with open(join(BASE_DIR, "static", "img", "blankAudio.png"), "rb") as imageFile:
+                with open(join(BASE_DIR, "wms", "static", "img", "blankAudio.png"), "rb") as imageFile:
                     base64Image = base64.b64encode(imageFile.read())
                 image = database.AudioImages(image=base64Image)
                 database.db.session.add(image)
@@ -53,12 +58,31 @@ class musicBlueprint:
             database.db.session.commit()
             return "OK"
 
+        @music.route("/update/metadata")
+        def updateMusicMetadata():
+            songs = database.Songs.query.all()
+            for song in songs:
+                id = song.id
+                location = song.location
+                metadata = json.loads(ffmpeg.metadata(location, ["title", "artist", "album"]))
+                if metadata["title"] != None:
+                    song.name = metadata["title"]
+                    pass
+
+                if metadata["artist"] != None:
+                    pass
+
+                if metadata["album"] != None:
+                    pass
+                database.db.session.commit()
+            return "OK"
+
         @music.route("/get/img/<int:imgId>")
         def getImage(imgId):
             audioImage = database.AudioImages.query.filter_by(id=imgId).first()
             print(audioImage)
             if audioImage == None:
-                filename = join(BASE_DIR, "static", "img", "blankAudio.png")
+                filename = join(BASE_DIR, "wms", "static", "img", "blankAudio.png")
                 return send_file(filename, mimetype="image/png")
             else:
                 image = base64.b64decode(audioImage.image)
@@ -66,30 +90,23 @@ class musicBlueprint:
 
         @music.route("/get/song/<int:id>")
         def getSong(id):
-            songData = database.Songs.query.filter_by(id=id).first()
-            if songData == None:
-                return render_template("music/noExist.html", pageName="Song Doesn't Exist", config=pageConfig)
-            else:
-                songLocation = songData.location
-                headers = Headers()
-                headers.add("Content-Transfer-Encoding", "binary")
-                headers.add("Content-Disposition", "inline", filename=songData.name)
-                headers.add("Content-length", os.path.getsize(songLocation))
-                headers.add("Accept-Ranges", "bytes")
-                def generate():
-                    with open(songLocation, "rb") as audio:
+            songData = database.Songs.query.filter_by(id=id).first_or_404()
+            songLocation = songData.location
+            headers = Headers()
+            headers.add("Content-Transfer-Encoding", "binary")
+            headers.add("Content-Disposition", "inline", filename=songData.name)
+            headers.add("Content-length", os.path.getsize(songLocation))
+            headers.add("Accept-Ranges", "bytes")
+            def generate():
+                with open(songLocation, "rb") as audio:
+                    data = audio.read(1024)
+                    while data:
+                        yield data
                         data = audio.read(1024)
-                        while data:
-                            yield data
-                            data = audio.read(1024)
-                return Response(stream_with_context(generate()), mimetype="audio/mpeg", headers=headers)
+            return Response(stream_with_context(generate()), mimetype="audio/mpeg", headers=headers)
 
         @music.route("/play/<int:id>")
         def playSong(id):
-            songData = database.Songs.query.filter_by(id=id).first()
+            songData = database.Songs.query.filter_by(id=id).first_or_404()
             pageConfig = security.pageData(self.configData, database)
-            if songData == None:
-                return render_template("music/noExist.html", pageName="Song Doesn't Exist", config=pageConfig)
-                logging.log("Song with the id of "+id+" not Found")
-            else:
-                return render_template("music/play.html", pageName="Music", config=pageConfig, id=id, song=songData, loadJS=["musicPlayer.js"])
+            return render_template("music/play.html", pageName="Music", config=pageConfig, id=id, song=songData, loadJS=["musicPlayer.js"])
