@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect, Respon
 from werkzeug.datastructures import Headers
 from wms.music import Search
 
-import os, datetime, logging
+import os, datetime, logging, base64, io
 from os.path import join, dirname, abspath, normpath
 BASE_DIR = normpath(join(dirname(abspath(__file__)), ".."))
 
@@ -31,11 +31,16 @@ class musicBlueprint:
                 checkData = database.Songs.query.filter_by(location=songPath).first()
                 if checkData == None:
                     name = os.path.basename(songPath).rsplit(".",1)[0]
-                    item = database.Songs(name=name,albumId=1,artistId=1,length=datetime.time(second=0),location=songPath)
+                    item = database.Songs(name=name,albumId=1,artistId=1,length=datetime.time(second=0),location=songPath, imageId=1)
                     database.db.session.add(item)
                     logging.debug("Adding Song: " + name)
                 else:
                     logging.debug("Song Already exists. Skipping...")
+            if database.AudioImages.query.filter_by(id=1).first() == None:
+                with open(join(BASE_DIR, "static", "img", "blankAudio.png"), "rb") as imageFile:
+                    base64Image = base64.b64encode(imageFile.read())
+                image = database.AudioImages(image=base64Image)
+                database.db.session.add(image)
             if database.Genres.query.filter_by(id=1).first() == None:
                 genere = database.Genres(name="Unknown Genre")
                 database.db.session.add(genere)
@@ -43,15 +48,21 @@ class musicBlueprint:
                 artist = database.Artists(name="Unknown Artist")
                 database.db.session.add(artist)
             if database.Albums.query.filter_by(id=1).first() == None:
-                album = database.Albums(name="Unknown Album", artistId=1, genreId=1)
+                album = database.Albums(name="Unknown Album", artistId=1, genreId=1, imageId=1)
                 database.db.session.add(album)
             database.db.session.commit()
             return "OK"
 
-        @music.route("/get/img/<int:id>")
-        def getImage(id):
-            filename = join(BASE_DIR, "static", "img", "blankAudio.png")
-            return send_file(filename, mimetype="image/*")
+        @music.route("/get/img/<int:imgId>")
+        def getImage(imgId):
+            audioImage = database.AudioImages.query.filter_by(id=imgId).first()
+            print(audioImage)
+            if audioImage == None:
+                filename = join(BASE_DIR, "static", "img", "blankAudio.png")
+                return send_file(filename, mimetype="image/png")
+            else:
+                image = base64.b64decode(audioImage.image)
+                return send_file(io.BytesIO(image), mimetype="image/png", as_attachment=False)
 
         @music.route("/get/song/<int:id>")
         def getSong(id):
