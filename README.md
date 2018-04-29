@@ -1,5 +1,7 @@
 # WMS [WORK IN PROGRESS]
 
+#### Check [This Issue](https://github.com/WillsMediaServer/WMS-Core/issues/8) to find out about the rewrite before wms leaves the prototyping stage.
+
 Wills Media Server
 ==================
 An all in one Media server with no pay for restrictions or paywalls
