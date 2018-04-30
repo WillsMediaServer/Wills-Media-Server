@@ -1,8 +1,0 @@
-    <footer class="footer">
-      <p class="copyright">Copyright &copy; 2017 William Neild All Rights Reserved.</p><br>
-      <a href="{{ config.Request.rootURL }}">Home</a>
-      {% if config.User.loggedIn %}
-        - <a href="{{ config.Request.rootURL }}dashboard/settings/">Settings</a>
-      {% endif %}
-    </footer>
-    {% include 'includes/bottomLinks.html' %}
