@@ -1,10 +1,10 @@
 __pycache__/
-.sass-cache/
-config.ini
-
 libs/ffmpeg
 
 *.bat
 *.db
 *.log
 *.pyc
+
+!start.bat
+!start.sh
