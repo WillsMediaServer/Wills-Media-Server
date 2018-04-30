@@ -5,11 +5,11 @@
     </h2>
     <p align="center">
         :tada:
-        <a href="./#">Homepage</a>
-        -
-        <a href="./#documentation">Documentation</a>
-        -
-        <a href="./#">FAQs</a>
+<a href="./#">Homepage</a>
+ - 
+<a href="./#documentation">Documentation</a>
+ - 
+<a href="./#">FAQs</a>
         :tada:
     </p>
 </section>
