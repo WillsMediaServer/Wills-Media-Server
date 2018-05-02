@@ -6,38 +6,35 @@
 #
 
 # import needed modules from the stdlib
-import sys, os, logging, threading, time
+import datetime, sys, os, logging
+from logging.config import dictConfig
 
 # create a handy BASE_DIR variable
 BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+LOG_DIR = os.path.join(BASE_DIR, "logs")
 # and use it to insert the libraries folder to the path
 sys.path.insert(1, os.path.join(BASE_DIR, "libraries"))
 # which allows for imports from the libraries folder
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-import flask.logging as flaskLogging
-from logging.config import dictConfig
+logfile = os.path.join(LOG_DIR, datetime.datetime.now().strftime('%Y-%m-%d')+".main.log")
 
-from wms.database import db
-from wms.hooks import Hooks
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
 
-# Initialize Flask
-app = Flask(__name__, instance_relative_config=True)
-app.debug = True
-
-# Disable default logs
-werkzeugLog = logging.getLogger('werkzeug')
-werkzeugLog.disabled = True
-# app.logger.disabled = True
+i = 0
+if os.path.exists(logfile):
+    while True:
+        i += 1
+        if not os.path.exists(logfile+"."+str(i)):
+            os.rename(logfile, logfile+"."+str(i))
+            break
 
 # Init logging
-file_location = os.path.join(BASE_DIR, "logs", "main.log")
 dictConfig({
     'version':1,
     'formatters': {
         'default': {
-            'format': '[%(asctime)s] [%(levelname)s] [%(section)s] %(message)s'
+            'format': '[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s'
         }
     },
     'handlers': {
@@ -47,45 +44,38 @@ dictConfig({
             'formatter': 'default'
         },
         'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': file_location,
-            'maxBytes': 16384,
-            'backupCount': 10,
+            'class': 'logging.FileHandler',
+            'filename': logfile,
             'formatter': 'default'
         }
     },
     'root': {
-        'level': 'INFO',
+        'level': logging.DEBUG,
+        'datefmt': '%d-%m-%Y %H:%M:%S',
+        'handlers': ['file', 'stdout']
+    },
+    'werkzeug': {
+        'level': logging.ERROR,
+        'datefmt': '%d-%m-%Y %H:%M:%S',
+        'handlers': ['file', 'stdout']
+    },
+    'flask.app': {
+        'level': logging.ERROR,
         'datefmt': '%d-%m-%Y %H:%M:%S',
         'handlers': ['file', 'stdout']
     }
 })
 
-mainLogger = logging.getLogger("root")
-logger = logging.LoggerAdapter(mainLogger, {"section":"WMS-Core"})
+def init():
+    from flask import Flask
+    from wms.server import Server
 
-def start(app):
-    logger.info("\n"+("="*25)+"\n\n  WMS-Core is Starting  \n\n"+("="*25))
-    # Apply WMS-Core hooks
-    Hooks(app, mainLogger)
+    # Initialize Flask
+    app = Flask(__name__)
+    app.debug = False
 
-    # Configure SQLAlchemy
-    app.config["SQLALCHEMY_DATABASE_URI"] = str("sqlite:///" + os.path.join(BASE_DIR, "database", "main.db"))
-    app.config["SQLALCHEMY_BINDS"] = {
-        "users": str('sqlite:///' + os.path.join(BASE_DIR, "database", "users.db")),
-        "music": str('sqlite:///' + os.path.join(BASE_DIR, "database", "music.db")),
-        "films": str('sqlite:///' + os.path.join(BASE_DIR, "database", "films.db")),
-        "tv": str('sqlite:///' + os.path.join(BASE_DIR, "database", "tv.db"))
-    }
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # remove werkzeug logger again
+    werkzeug_logger = logging.getLogger('werkzeug')
+    werkzeug_logger.disabled = True
 
-    # Initialize SQLAlchemy Databases
-    db.init_app(app)
-    db.create_all(app=app)
-
-    from wms.api import apiBlueprintV1
-    apiV1 = apiBlueprintV1.api(db)
-    app.register_blueprint(apiV1.api)
-    logger.info("Starting WMS Server")
-
-start(app)
+    server = Server(app)

@@ -1,3 +1,10 @@
+#
+# /wms/database.py
+# Wills Media Server Core
+# Version: 0.0.1.0 Alpha
+# Created By William Neild
+#
+
 import logging
 
 from flask_sqlalchemy import SQLAlchemy

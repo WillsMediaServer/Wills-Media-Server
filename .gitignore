@@ -4,6 +4,7 @@ libs/ffmpeg
 *.bat
 *.db
 *.log
+*.log.*
 *.pyc
 
 !start.bat
