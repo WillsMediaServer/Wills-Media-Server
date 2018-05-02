@@ -1,4 +1,4 @@
 ######## requirements.txt ########
 flask==1.0.2
-flask_sqlalchemy == 2.3.0
+flask_sqlalchemy==2.3.2
 requests==2.18.4
