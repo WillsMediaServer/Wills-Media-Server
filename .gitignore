@@ -6,3 +6,5 @@ libraries/*
 *.log
 *.log.*
 *.pyc
+
+!libraries/mediaSearcher
