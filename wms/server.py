@@ -5,7 +5,8 @@
 # Created By William Neild
 #
 
-import atexit, logging, sys, os
+import logging, sys, os
+from flask import jsonify
 from gevent.wsgi import WSGIServer
 
 from wms import BASE_DIR
@@ -15,15 +16,20 @@ from wms.database import db
 class Server:
     def __init__(self, app):
         self.logger = logging.getLogger('wms.core')
+        self.logger.info("===== WMS is Starting =====")
+
+        # Add error pages
+        @app.errorhandler(404)
+        def error404(error):
+            return jsonify(error="Error 404", details=str(error)), 404
+
+        @app.errorhandler(500)
+        def error500(error):
+            return jsonify(error="Error 500", details=str(error)), 500
+
         self.start(app)
 
     def start(self, app):
-        # setup default wms logger
-        self.logger.info("===== WMS is Starting =====")
-
-        # init stop function
-        atexit.register(self.stop)
-
         # Apply WMS-Core hooks
         Hooks(app)
 
@@ -41,16 +47,22 @@ class Server:
         db.init_app(app)
         db.create_all(app=app)
 
+        # Add base API Blueprint
         from wms.api import apiBlueprintV1
         apiV1 = apiBlueprintV1.api(db)
         app.register_blueprint(apiV1.api)
-        self.logger.info("Starting WMS Server")
+
+        # Start the server and prevent gevent from logging requests as they're already handled.
+        self.server = WSGIServer(("0.0.0.0", 80), application=app, log=None)
 
         try:
-            self.server = WSGIServer(('', 80), app).serve_forever()
+            self.logger.info("Starting WMS Server")
+            self.server.serve_forever()
         except KeyboardInterrupt:
-            sys.exit()
+            self.stop()
 
 
     def stop(self):
         self.logger.info("===== Shutting Down WMS =====")
+        self.server.stop()
+        sys.exit()
