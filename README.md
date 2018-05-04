@@ -3,26 +3,26 @@
     <h2 align="center">
         Wills Media Server, A flexible open-sourced media server
     </h2>
-    <p align="center">
-        :tada:
-<a href="./#">Homepage</a>
- - 
-<a href="./#documentation">Documentation</a>
- - 
-<a href="./#">FAQs</a>
-        :tada:
-    </p>
+    <p align="center">:tada: <a href="https://github.com/WillsMediaServer/WMS-Core/">Homepage</a> - <a href="http://wills-media-server.rtfd.io">Documentation</a> - <a href="#faq">FAQs</a> :tada:</p>
 </section>
 <hr />
 
 ![PyUp](https://pyup.io/repos/github/WillsMediaServer/WMS-Core/shield.svg)
 ![P3rdy](https://pyup.io/repos/github/WillsMediaServer/WMS-Core/python-3-shield.svg)
+[![Documentation Status](https://readthedocs.org/projects/wills-media-server/badge/?version=latest)](http://wills-media-server.readthedocs.io/en/latest/?badge=latest)
 
 ## Table of Contents
 - [Installation](#installation)
 
 
 ### Installation
+
+#### Prerequisites
+
+- [ ] Python 3.5 or above
+- [ ] ffmpeg
+- [ ] A Computer with internet access
+
 To install Wills Media Server you will need to clone the repository and then change directory into it.
 ```
 git clone https://github.com/WillsMediaServer/WMS-Core.git
@@ -42,3 +42,7 @@ and finaly run:
 ```
 python start.py
 ```
+
+Read our Documentation which can be found at [http://wills-media-server.readthedocs.io](http://wills-media-server.readthedocs.io) for more information.
+
+### FAQ
