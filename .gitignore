@@ -1,11 +1,8 @@
 __pycache__/
-libs/ffmpeg
+libraries/*
 
 *.bat
 *.db
 *.log
 *.log.*
 *.pyc
-
-!start.bat
-!start.sh
