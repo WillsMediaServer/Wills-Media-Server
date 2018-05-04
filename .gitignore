@@ -1,10 +1,18 @@
+# folders
+
 __pycache__/
 libraries/*
+
+
+# files
 
 *.bat
 *.db
 *.log
 *.log.*
 *.pyc
+
+
+# specific folders
 
 !libraries/mediaSearcher
