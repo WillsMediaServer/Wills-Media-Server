@@ -34,8 +34,8 @@ class Server:
         Hooks(app)
 
         # Configure SQLAlchemy
-        app.config["SQLALCHEMY_DATABASE_URI"] = str("sqlite:///" + os.path.join(BASE_DIR, "database", "main.db"))
         app.config["SQLALCHEMY_BINDS"] = {
+            "main": str("sqlite:///" + os.path.join(BASE_DIR, "database", "main.db")),
             "users": str('sqlite:///' + os.path.join(BASE_DIR, "database", "users.db")),
             "music": str('sqlite:///' + os.path.join(BASE_DIR, "database", "music.db")),
             "films": str('sqlite:///' + os.path.join(BASE_DIR, "database", "films.db")),
