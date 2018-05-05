@@ -6,6 +6,13 @@
 # Created By William Neild
 #
 
+"""Wills Media Server
+
+This module is Wills Media Server and holds the API and all of the media/metadata
+handling and storing.
+
+"""
+
 # import needed modules from the stdlib
 import datetime
 import logging
@@ -76,6 +83,12 @@ dictConfig({
 
 
 def init():
+    """Initialize WMS
+
+    This function creates the flask app, disables the werkzeug logger and then it
+    initializes the Server class to start the server.
+
+    """
     from flask import Flask
     from wms.server import Server
 

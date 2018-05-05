@@ -3,6 +3,7 @@
 __pycache__/
 libraries/*
 .idea/
+_build/
 
 # files
 
@@ -12,6 +13,7 @@ libraries/*
 *.log.*
 *.pyc
 
+!make.bat
 
 # specific folders
 
