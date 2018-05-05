@@ -6,14 +6,15 @@
 #
 
 import logging
-import sys
 import os
-from flask import jsonify
-from gevent.wsgi import WSGIServer
+import sys
 
+from flask import jsonify
+
+from gevent.wsgi import WSGIServer
 from wms import BASE_DIR
-from wms.hooks import Hooks
 from wms.database import db
+from wms.hooks import Hooks
 
 
 class Server:

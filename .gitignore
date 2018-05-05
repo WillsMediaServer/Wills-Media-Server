@@ -16,3 +16,4 @@ libraries/*
 # specific folders
 
 !libraries/mediaSearcher
+!libraries/mediaMetadata

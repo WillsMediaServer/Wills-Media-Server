@@ -5,8 +5,9 @@
 # Created By William Neild
 #
 
-from flask import Blueprint
 import logging
+
+from flask import Blueprint
 
 from wms.api.v1 import musicAPI
 

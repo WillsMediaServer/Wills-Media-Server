@@ -7,9 +7,9 @@
 
 # import needed modules from the stdlib
 import datetime
-import sys
-import os
 import logging
+import os
+import sys
 from logging.config import dictConfig
 
 # create a handy BASE_DIR variable

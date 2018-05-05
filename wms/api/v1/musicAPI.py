@@ -5,15 +5,16 @@
 # Created By William Neild
 #
 
+import base64
+import datetime
+import logging
+import os
+
 from flask import jsonify, request
+
 from mediaSearcher import Searcher
 from wms import STATIC_DIR
 from wms.database import Albums, Artists, AudioImages, Genres, Songs
-
-import logging
-import os
-import datetime
-import base64
 
 
 class Music:
