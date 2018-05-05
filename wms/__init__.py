@@ -17,8 +17,9 @@ BASE_DIR = os.path.normpath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), ".."))
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 STATIC_DIR = os.path.join(BASE_DIR, "wms", "static")
+LIB_DIR = os.path.join(BASE_DIR, "libraries")
 # and use it to insert the libraries folder to the path
-sys.path.insert(1, os.path.join(BASE_DIR, "libraries"))
+sys.path.insert(1, LIB_DIR)
 # which allows for imports from the libraries folder
 
 logfile = os.path.join(
