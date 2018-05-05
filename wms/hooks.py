@@ -8,6 +8,7 @@
 import logging
 from flask import Flask, request
 
+
 class Hooks:
     def __init__(self, app):
         self.hooksLogger = logging.getLogger('wms.hooks')
@@ -17,9 +18,11 @@ class Hooks:
 
     def main(self, app):
         self.hooksLogger.debug("Adding After Request Hook")
+
         @app.after_request
         def after_request(response):
-            responseLogFormat = "{} {} {} \"{}\" {}".format(request.remote_addr, request.method, response.status, response.mimetype, request.path)
+            responseLogFormat = "{} {} {} \"{}\" {}".format(
+                request.remote_addr, request.method, response.status, response.mimetype, request.path)
             self.serverLogger.info(responseLogFormat)
             response.headers["Server"] = "Wills Media Server v0.0.1"
             return response

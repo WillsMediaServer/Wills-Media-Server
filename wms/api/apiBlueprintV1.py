@@ -10,6 +10,7 @@ import logging
 
 from wms.api.v1 import musicAPI
 
+
 class api:
     def __init__(self, database):
         self.logger = logging.getLogger('wms.api')

@@ -11,6 +11,8 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 # Server settings table
+
+
 class ServerSettings(db.Model):
     __bind_key__ = "main"
     __tablename__ = "serverSettings"
@@ -21,6 +23,8 @@ class ServerSettings(db.Model):
     description = db.Column("description", db.Text)
 
 # Tables for the Users Database
+
+
 class User(db.Model):
     __bind_key__ = "users"
     __tablename__ = "user"
@@ -35,6 +39,7 @@ class User(db.Model):
 
 # tables for the Music Database
 
+
 class Artists(db.Model):
     __bind_key__ = "music"
     __tablename__ = "artists"
@@ -44,25 +49,31 @@ class Artists(db.Model):
     albums = db.relationship("Albums", backref="artist", lazy=True)
     songs = db.relationship("Songs", backref="artist", lazy=True)
 
+
 class Albums(db.Model):
     __bind_key__ = "music"
     __tablename__ = "albums"
     id = db.Column("id", db.Integer, primary_key=True)
-    artistId = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    artistId = db.Column("artist", db.Integer,
+                         db.ForeignKey("artists.id"), nullable=False)
     name = db.Column("name", db.String(255))
     releaseDate = db.Column("releaseDate", db.DATE)
-    genreId = db.Column("genre", db.Integer, db.ForeignKey("genres.id"), nullable=False)
+    genreId = db.Column("genre", db.Integer, db.ForeignKey(
+        "genres.id"), nullable=False)
     picture = db.Column("picture", db.TEXT)
     songs = db.relationship("Songs", backref="album", lazy=True)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))
+
 
 class Songs(db.Model):
     __bind_key__ = "music"
     __tablename__ = "songs"
     id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(255))
-    albumId = db.Column("album", db.Integer, db.ForeignKey("albums.id"), nullable=False)
-    artistId = db.Column("artist", db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    albumId = db.Column("album", db.Integer, db.ForeignKey(
+        "albums.id"), nullable=False)
+    artistId = db.Column("artist", db.Integer,
+                         db.ForeignKey("artists.id"), nullable=False)
     length = db.Column("length", db.TIME)
     location = db.Column("location", db.TEXT)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))
@@ -70,8 +81,8 @@ class Songs(db.Model):
     @property
     def json(self):
         return {
-            'id' : int(self.id),
-            'name' : str(self.name),
+            'id': int(self.id),
+            'name': str(self.name),
             'length': str(self.length),
             'location': str(self.location),
             'album': {
@@ -87,6 +98,7 @@ class Songs(db.Model):
             }
         }
 
+
 class Genres(db.Model):
     __bind_key__ = "music"
     __tablename__ = "genres"
@@ -94,6 +106,7 @@ class Genres(db.Model):
     name = db.Column("name", db.String(255))
     description = db.Column("description", db.TEXT)
     albums = db.relationship("Albums", backref="genre", lazy=True)
+
 
 class AudioImages(db.Model):
     __bind_key__ = "music"

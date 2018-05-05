@@ -6,18 +6,23 @@
 #
 
 # import needed modules from the stdlib
-import datetime, sys, os, logging
+import datetime
+import sys
+import os
+import logging
 from logging.config import dictConfig
 
 # create a handy BASE_DIR variable
-BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+BASE_DIR = os.path.normpath(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), ".."))
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 STATIC_DIR = os.path.join(BASE_DIR, "wms", "static")
 # and use it to insert the libraries folder to the path
 sys.path.insert(1, os.path.join(BASE_DIR, "libraries"))
 # which allows for imports from the libraries folder
 
-logfile = os.path.join(LOG_DIR, datetime.datetime.now().strftime('%Y-%m-%d')+".main.log")
+logfile = os.path.join(
+    LOG_DIR, datetime.datetime.now().strftime('%Y-%m-%d') + ".main.log")
 
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
@@ -26,13 +31,13 @@ i = 0
 if os.path.exists(logfile):
     while True:
         i += 1
-        if not os.path.exists(logfile+"."+str(i)):
-            os.rename(logfile, logfile+"."+str(i))
+        if not os.path.exists(logfile + "." + str(i)):
+            os.rename(logfile, logfile + "." + str(i))
             break
 
 # Init logging
 dictConfig({
-    'version':1,
+    'version': 1,
     'formatters': {
         'default': {
             'format': '[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s'
@@ -66,6 +71,7 @@ dictConfig({
         'handlers': ['file', 'stdout']
     }
 })
+
 
 def init():
     from flask import Flask

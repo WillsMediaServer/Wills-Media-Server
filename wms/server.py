@@ -5,13 +5,16 @@
 # Created By William Neild
 #
 
-import logging, sys, os
+import logging
+import sys
+import os
 from flask import jsonify
 from gevent.wsgi import WSGIServer
 
 from wms import BASE_DIR
 from wms.hooks import Hooks
 from wms.database import db
+
 
 class Server:
     def __init__(self, app):
@@ -60,7 +63,6 @@ class Server:
             self.server.serve_forever()
         except KeyboardInterrupt:
             self.stop()
-
 
     def stop(self):
         self.logger.info("===== Shutting Down WMS =====")

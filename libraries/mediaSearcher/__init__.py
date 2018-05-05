@@ -5,13 +5,15 @@
 # Created By William Neild
 #
 
-import logging, os
+import logging
+import os
 
 supportedExtensions = {
     "music": ["mp3", "wav", "ogg", "m4a", "flac", "aac"],
     "films": [],
     "tv": []
 }
+
 
 class Searcher:
     def __init__(self, mediaType, paths=[]):
@@ -29,7 +31,6 @@ class Searcher:
         if self.mediaResult == []:
             logger.error("Media Searcher found no supported media files")
 
-
     def music(self, paths):
         songs = []
         for path in paths:
@@ -39,7 +40,6 @@ class Searcher:
                         if filename.lower().endswith(extension):
                             songs.append(os.path.join(dir, filename))
         return songs
-
 
     def films(self, paths):
         pass

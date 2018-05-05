@@ -10,7 +10,11 @@ from mediaSearcher import Searcher
 from wms import STATIC_DIR
 from wms.database import Albums, Artists, AudioImages, Genres, Songs
 
-import logging, os, datetime, base64
+import logging
+import os
+import datetime
+import base64
+
 
 class Music:
     def __init__(self, api, database):
@@ -60,7 +64,8 @@ class Music:
         def updateLibrary():
 
             if Albums.query.filter_by(id=1).first() == None:
-                newAlbum = Albums(name="Unknown Album", artistId=1, genreId=1, imageId=1)
+                newAlbum = Albums(name="Unknown Album",
+                                  artistId=1, genreId=1, imageId=1)
                 self.libraryLogger.info("Adding Unknown Album placeholder")
                 database.session.add(newAlbum)
 
@@ -73,7 +78,8 @@ class Music:
                 with open(os.path.join(STATIC_DIR, "img", "blankAudio.png"), "rb") as imageFile:
                     base64Image = base64.b64encode(imageFile.read())
                 newImage = AudioImages(image=base64Image)
-                self.libraryLogger.info("Adding Unknown Audio Image placeholder")
+                self.libraryLogger.info(
+                    "Adding Unknown Audio Image placeholder")
                 database.session.add(newImage)
 
             if Genres.query.filter_by(id=1).first() == None:
@@ -89,12 +95,15 @@ class Music:
                 tempName = os.path.basename(file).rsplit(".", 1)[0]
                 checkData = Songs.query.filter_by(location=file).first()
                 if checkData == None:
-                    newSong = Songs(name=tempName, albumId=1, artistId=1, length=tempLength, location=file, imageId=1)
+                    newSong = Songs(name=tempName, albumId=1, artistId=1,
+                                    length=tempLength, location=file, imageId=1)
                     database.session.add(newSong)
                     songNum = songNum + 1
-                    self.libraryLogger.debug("Adding song name: {} Number: {}".format(tempName, songNum))
+                    self.libraryLogger.debug(
+                        "Adding song name: {} Number: {}".format(tempName, songNum))
                 else:
-                    self.libraryLogger.debug("Song name: {} already exists".format(tempName))
+                    self.libraryLogger.debug(
+                        "Song name: {} already exists".format(tempName))
 
             self.libraryLogger.info("Adding {} songs".format(songNum))
             database.session.commit()
