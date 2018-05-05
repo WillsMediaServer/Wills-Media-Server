@@ -1,4 +1,5 @@
-#
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # /wms/api/v1/musicAPI.py
 # Wills Media Server Core
 # Version: 0.0.1.0 Alpha
