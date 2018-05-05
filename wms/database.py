@@ -79,26 +79,6 @@ class Songs(db.Model):
     location = db.Column("location", db.TEXT)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))
 
-    @property
-    def json(self):
-        return {
-            'id': int(self.id),
-            'name': str(self.name),
-            'length': str(self.length),
-            'location': str(self.location),
-            'album': {
-                'id': int(self.album.id),
-                'name': str(self.album.name)
-            },
-            'artist': {
-                'id': int(self.artist.id),
-                'name': str(self.artist.name)
-            },
-            'image': {
-                'id': int(self.image.id)
-            }
-        }
-
 
 class Genres(db.Model):
     __bind_key__ = "music"

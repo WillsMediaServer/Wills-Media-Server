@@ -30,20 +30,80 @@ class Music:
         @api.route('/music/songs/', methods=['GET'])
         def songs():
             songList = Songs.query.all()
-            return jsonify(status="OK", result=[song.json for song in songList])
+            returnData = []
+            for song in songList:
+                newSongData = {}
+                newSongData["id"] = int(song.id)
+                newSongData["name"] = str(song.name)
+                newSongData["length"] = str(song.length)
+                newSongData["location"] = str(song.location)
+                newSongData["artist"] = {}
+                newSongData["artist"]["id"] = int(song.artist.id)
+                newSongData["artist"]["name"] = str(song.artist.name)
+                newSongData["album"] = {}
+                newSongData["album"]["id"] = int(song.album.id)
+                newSongData["album"]["name"] = str(song.album.name)
+                newSongData["image"] = {}
+                newSongData["image"]["id"] = int(song.image.id)
+                returnData.append(newSongData)
+            return jsonify(status="OK", result=returnData)
 
         @api.route('/music/songs/<int:id>', methods=['GET'])
         def songId(id):
             song = Songs.query.filter_by(id=int(id)).first()
-            return jsonify(status="OK", result=song.json)
+            if song != None:
+                returnData = {}
+                returnData["id"] = int(song.id)
+                returnData["name"] = str(song.name)
+                returnData["length"] = str(song.length)
+                returnData["location"] = str(song.location)
+                returnData["artist"] = {}
+                returnData["artist"]["id"] = int(song.artist.id)
+                returnData["artist"]["name"] = str(song.artist.name)
+                returnData["album"] = {}
+                returnData["album"]["id"] = int(song.album.id)
+                returnData["album"]["name"] = str(song.album.name)
+                returnData["image"] = {}
+                returnData["image"]["id"] = int(song.image.id)
+                return jsonify(status="OK", result=returnData)
+            else:
+                return jsonify(status="ERROR", error="Song with ID: {} does NOT exist".format(id))
 
         @api.route('/music/artists/', methods=['GET'])
         def artists():
-            return "OK"
+            artistList = Artists.query.all()
+            returnData = []
+            for artist in artistList:
+                newArtistData = {}
+                newArtistData["id"] = int(artist.id)
+                newArtistData["name"] = str(artist.name)
+                newArtistData["description"] = str(artist.description)
+                newArtistData["albums"] = []
+                for album in artist.albums:
+                    newArtistData["albums"].append(int(album.id))
+                newArtistData["songs"] = []
+                for song in artist.songs:
+                    newArtistData["songs"].append(int(song.id))
+                returnData.append(newArtistData)
+            return jsonify(status="OK", result=returnData)
 
         @api.route('/music/artists/<int:id>', methods=['GET'])
         def artistId(id):
-            return jsonify(id=str(id), status="OK")
+            artist = Artists.query.filter_by(id=id).first()
+            if artist != None:
+                returnData = {}
+                returnData["id"] = int(artist.id)
+                returnData["name"] = str(artist.name)
+                returnData["description"] = str(artist.description)
+                returnData["albums"] = []
+                for album in artist.albums:
+                    returnData["albums"].append(int(album.id))
+                returnData["songs"] = []
+                for song in artist.songs:
+                    returnData["songs"].append(int(song.id))
+                return jsonify(status="OK", result=returnData)
+            else:
+                return jsonify(status="ERROR", error="Artist with ID: {} does NOT exist".format(id))
 
         @api.route('/music/albums/', methods=['GET'])
         def albums():
