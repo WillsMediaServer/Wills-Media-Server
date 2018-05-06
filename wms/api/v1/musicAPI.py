@@ -33,19 +33,23 @@ class Music:
             songList = Songs.query.all()
             returnData = []
             for song in songList:
-                newSongData = {}
-                newSongData["id"] = int(song.id)
-                newSongData["name"] = str(song.name)
-                newSongData["length"] = str(song.length)
-                newSongData["location"] = str(song.location)
-                newSongData["artist"] = {}
-                newSongData["artist"]["id"] = int(song.artist.id)
-                newSongData["artist"]["name"] = str(song.artist.name)
-                newSongData["album"] = {}
-                newSongData["album"]["id"] = int(song.album.id)
-                newSongData["album"]["name"] = str(song.album.name)
-                newSongData["image"] = {}
-                newSongData["image"]["id"] = int(song.image.id)
+                newSongData = {
+                    'id': int(song.id),
+                    'name': str(song.name),
+                    'length': str(song.length),
+                    'location': str(song.location),
+                    'artist': {
+                        'id': int(song.artist.id),
+                        'name': str(song.artist.name)
+                    },
+                    'album': {
+                        'id': int(song.album.id),
+                        'name': str(song.album.name)
+                    },
+                    'image': {
+                        'id': int(song.image.id)
+                    }
+                }
                 returnData.append(newSongData)
             return jsonify(status="OK", result=returnData)
 
@@ -53,19 +57,23 @@ class Music:
         def songId(id):
             song = Songs.query.filter_by(id=int(id)).first()
             if song != None:
-                returnData = {}
-                returnData["id"] = int(song.id)
-                returnData["name"] = str(song.name)
-                returnData["length"] = str(song.length)
-                returnData["location"] = str(song.location)
-                returnData["artist"] = {}
-                returnData["artist"]["id"] = int(song.artist.id)
-                returnData["artist"]["name"] = str(song.artist.name)
-                returnData["album"] = {}
-                returnData["album"]["id"] = int(song.album.id)
-                returnData["album"]["name"] = str(song.album.name)
-                returnData["image"] = {}
-                returnData["image"]["id"] = int(song.image.id)
+                returnData = {
+                    'id': int(song.id),
+                    'name': str(song.name),
+                    'length': str(song.length),
+                    'location': str(song.location),
+                    'artist': {
+                        'id': int(song.artist.id),
+                        'name': str(song.artist.name)
+                    },
+                    'album': {
+                        'id': int(song.album.id),
+                        'name': str(song.album.name)
+                    },
+                    'image': {
+                        'id': int(song.image.id)
+                    }
+                }
                 return jsonify(status="OK", result=returnData)
             else:
                 return jsonify(status="ERROR", error="Song with ID: {} does NOT exist".format(id))

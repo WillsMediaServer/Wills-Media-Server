@@ -10,10 +10,10 @@ import logging
 import os
 import sys
 
-from flask import jsonify
+from flask import jsonify, render_template
 
 from gevent.wsgi import WSGIServer
-from wms import BASE_DIR
+from wms import BASE_DIR, LIB_DIR
 from wms.database import db
 from wms.hooks import Hooks
 
@@ -51,6 +51,10 @@ class Server:
         # Initialize SQLAlchemy Databases
         db.init_app(app)
         db.create_all(app=app)
+
+        @app.route('/')
+        def webClient():
+            return render_template(os.path.join(LIB_DIR, "WMS-UI", "build", "index.html"))
 
         # Add base API Blueprint
         from wms.api import apiBlueprintV1

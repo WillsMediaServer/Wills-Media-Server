@@ -100,4 +100,10 @@ def init():
     werkzeug_logger = logging.getLogger('werkzeug')
     werkzeug_logger.disabled = True
 
+    if not os.path.exists(os.path.join(LIB_DIR, "WMS-UI", "build")):
+        logging.critical(
+            "WMS-UI build doesnt exist. please clone the wms-ui repo and build it in the libraries folder")
+        logging.info("Now Exiting")
+        sys.exit()
+
     server = Server(app)
