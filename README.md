@@ -23,6 +23,11 @@
 - [ ] ffmpeg
 - [ ] A Computer with internet access
 
+##### WMS-UI
+
+- [ ] Nodejs
+- [ ] NPM
+
 To install Wills Media Server you will need to clone the repository and then change directory into it.
 ```
 git clone https://github.com/WillsMediaServer/WMS-Core.git
@@ -38,8 +43,23 @@ pip install -r requirements.txt --target=/path/to/WMS-Core/libraries
 ```
 (the second command should only be ran if you cannot or do not want to install the packages globaly)
 
+next change directory into the libraries folder and clone the user interface into it
+
+```
+cd libraries
+git clone https://github.com/WillsMediaServer/WMS-UI.git
+```
+
+and then build the latest version of the UI with:
+
+```
+cd WMS-UI
+npm run build
+```
+
 and finaly run:
 ```
+cd ../../
 python start.py
 ```
 

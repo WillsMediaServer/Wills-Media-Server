@@ -13,7 +13,7 @@ import sys
 from flask import jsonify, render_template
 
 from gevent.wsgi import WSGIServer
-from wms import BASE_DIR, LIB_DIR
+from wms import BASE_DIR, LIB_DIR, clientBlueprint
 from wms.database import db
 from wms.hooks import Hooks
 
@@ -52,14 +52,12 @@ class Server:
         db.init_app(app)
         db.create_all(app=app)
 
-        @app.route('/')
-        def webClient():
-            return render_template(os.path.join(LIB_DIR, "WMS-UI", "build", "index.html"))
-
         # Add base API Blueprint
         from wms.api import apiBlueprintV1
         apiV1 = apiBlueprintV1.api(db)
+        webClientBP = clientBlueprint.WebClient(db)
         app.register_blueprint(apiV1.api)
+        app.register_blueprint(webClientBP.webClient)
 
         # Start the server and prevent gevent from logging requests as they're already handled.
         self.server = WSGIServer(("0.0.0.0", 80), application=app, log=None)

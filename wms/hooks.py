@@ -27,4 +27,5 @@ class Hooks:
                 request.remote_addr, request.method, response.status, response.mimetype, request.path)
             self.serverLogger.info(responseLogFormat)
             response.headers["Server"] = "Wills Media Server v0.0.1"
+            response.headers["Access-Control-Allow-Origin"] = "*"
             return response
