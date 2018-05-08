@@ -14,8 +14,10 @@ from flask import jsonify, render_template
 
 from gevent.wsgi import WSGIServer
 from wms import BASE_DIR, LIB_DIR, clientBlueprint
+from wms.api import apiBlueprintV1
 from wms.database import db
 from wms.hooks import Hooks
+from wms.media import covers, music
 
 
 class Server:
@@ -53,11 +55,15 @@ class Server:
         db.create_all(app=app)
 
         # Add base API Blueprint
-        from wms.api import apiBlueprintV1
+
         apiV1 = apiBlueprintV1.api(db)
         webClientBP = clientBlueprint.WebClient(db)
+        mediaCovers = covers.Covers(db)
+        mediaMusic = music.Song(db)
         app.register_blueprint(apiV1.api)
         app.register_blueprint(webClientBP.webClient)
+        app.register_blueprint(mediaCovers.covers)
+        app.register_blueprint(mediaMusic.song)
 
         # Start the server and prevent gevent from logging requests as they're already handled.
         self.server = WSGIServer(("0.0.0.0", 80), application=app, log=None)

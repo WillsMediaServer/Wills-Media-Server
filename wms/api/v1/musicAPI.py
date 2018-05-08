@@ -30,7 +30,9 @@ class Music:
 
         @api.route('/music/songs/', methods=['GET'])
         def songs():
-            songList = Songs.query.all()
+            limit = request.args.get("limit", 50)
+            offset = request.args.get("offset", 0)
+            songList = Songs.query.offset(offset).limit(limit)
             returnData = []
             for song in songList:
                 newSongData = {
