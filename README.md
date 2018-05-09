@@ -50,10 +50,11 @@ cd libraries
 git clone https://github.com/WillsMediaServer/WMS-UI.git
 ```
 
-and then build the latest version of the UI with:
+and then you will need to download all the dependencies and build the latest version of the UI with:
 
 ```
 cd WMS-UI
+npm install
 npm run build
 ```
 
