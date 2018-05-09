@@ -85,14 +85,15 @@ class Music:
             artistList = Artists.query.all()
             returnData = []
             for artist in artistList:
-                newArtistData = {}
-                newArtistData["id"] = int(artist.id)
-                newArtistData["name"] = str(artist.name)
-                newArtistData["description"] = str(artist.description)
-                newArtistData["albums"] = []
+                newArtistData = {
+                    'id': int(artist.id),
+                    'name': str(artist.name),
+                    'description': str(artist.description),
+                    'albums': [],
+                    'songs': []
+                }
                 for album in artist.albums:
                     newArtistData["albums"].append(int(album.id))
-                newArtistData["songs"] = []
                 for song in artist.songs:
                     newArtistData["songs"].append(int(song.id))
                 returnData.append(newArtistData)
@@ -102,14 +103,15 @@ class Music:
         def artistId(id):
             artist = Artists.query.filter_by(id=id).first()
             if artist != None:
-                returnData = {}
-                returnData["id"] = int(artist.id)
-                returnData["name"] = str(artist.name)
-                returnData["description"] = str(artist.description)
-                returnData["albums"] = []
+                returnData = {
+                    'id': int(artist.id),
+                    'name': str(artist.name),
+                    'description': str(artist.description),
+                    'albums': [],
+                    'songs': []
+                }
                 for album in artist.albums:
                     returnData["albums"].append(int(album.id))
-                returnData["songs"] = []
                 for song in artist.songs:
                     returnData["songs"].append(int(song.id))
                 return jsonify(status="OK", result=returnData)
