@@ -18,20 +18,28 @@ class Song:
         def getSong(id):
             song = Songs.query.filter_by(id=id).first()
             if song != None:
-                songLocation = song.location
-                headers = Headers()
-                headers.add("Content-Transfer-Encoding", "binary")
-                headers.add("Content-Disposition", "inline",
-                            filename=song.name)
-                headers.add("Content-length", os.path.getsize(songLocation))
-                headers.add("Accept-Ranges", "bytes")
+                try:
+                    songLocation = song.location
+                    headers = Headers()
+                    headers.add("Content-Transfer-Encoding", "binary")
+                    headers.add("Content-Disposition", "inline",
+                                filename=song.name)
+                    headers.add("Content-length",
+                                os.path.getsize(songLocation))
+                    headers.add("Accept-Ranges", "bytes")
 
-                def generate():
-                    with open(songLocation, "rb") as audio:
-                        data = audio.read(1024)
-                        while data:
-                            yield data
+                    def generate():
+                        with open(songLocation, "rb") as audio:
                             data = audio.read(1024)
-                return Response(stream_with_context(generate()), mimetype="audio/mpeg", headers=headers)
+                            while data:
+                                yield data
+                                data = audio.read(1024)
+                    return Response(stream_with_context(generate()), mimetype="audio/mpeg", headers=headers)
+                except FileNotFoundError as error:
+                    self.logger.warning(
+                        "File Not Found: {}".format(song.location))
+                    return jsonify(status="error", error=str(error))
+                except Exception as error:
+                    return jsonify(status="error", error=str(error))
             else:
                 return jsonify(status="error", error="Song doesn't exist")

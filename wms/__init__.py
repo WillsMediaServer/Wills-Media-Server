@@ -20,6 +20,9 @@ import os
 import sys
 from logging.config import dictConfig
 
+from wms.config import Config
+from wms.database import db
+
 # create a handy BASE_DIR variable
 BASE_DIR = os.path.normpath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -106,4 +109,21 @@ def init():
         logging.info("Now Exiting")
         sys.exit()
 
-    server = Server(app)
+    # Configure SQLAlchemy
+    app.config["SQLALCHEMY_BINDS"] = {
+        "main": str("sqlite:///" + os.path.join(BASE_DIR, "database", "main.db")),
+        "users": str('sqlite:///' + os.path.join(BASE_DIR, "database", "users.db")),
+        "music": str('sqlite:///' + os.path.join(BASE_DIR, "database", "music.db")),
+        "films": str('sqlite:///' + os.path.join(BASE_DIR, "database", "films.db")),
+        "tv": str('sqlite:///' + os.path.join(BASE_DIR, "database", "tv.db"))
+    }
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # Initialize SQLAlchemy Databases
+    db.init_app(app)
+    db.create_all(app=app)
+
+    # Initialize Config
+    config = Config(app, db)
+
+    server = Server(app, db, config)

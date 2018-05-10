@@ -15,15 +15,15 @@ from flask import jsonify, render_template
 from gevent.wsgi import WSGIServer
 from wms import BASE_DIR, LIB_DIR, clientBlueprint
 from wms.api import apiBlueprintV1
-from wms.database import db
 from wms.hooks import Hooks
 from wms.media import covers, music
 
 
 class Server:
-    def __init__(self, app):
+    def __init__(self, app, db, config):
         self.logger = logging.getLogger('wms.core')
         self.logger.info("===== WMS is Starting =====")
+        self.config = config
 
         # Add error pages
         @app.errorhandler(404)
@@ -34,25 +34,11 @@ class Server:
         def error500(error):
             return jsonify(error="Error 500", details=str(error)), 500
 
-        self.start(app)
+        self.start(app, db)
 
-    def start(self, app):
+    def start(self, app, db):
         # Apply WMS-Core hooks
         Hooks(app)
-
-        # Configure SQLAlchemy
-        app.config["SQLALCHEMY_BINDS"] = {
-            "main": str("sqlite:///" + os.path.join(BASE_DIR, "database", "main.db")),
-            "users": str('sqlite:///' + os.path.join(BASE_DIR, "database", "users.db")),
-            "music": str('sqlite:///' + os.path.join(BASE_DIR, "database", "music.db")),
-            "films": str('sqlite:///' + os.path.join(BASE_DIR, "database", "films.db")),
-            "tv": str('sqlite:///' + os.path.join(BASE_DIR, "database", "tv.db"))
-        }
-        app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-        # Initialize SQLAlchemy Databases
-        db.init_app(app)
-        db.create_all(app=app)
 
         # Add base API Blueprint
 
@@ -66,7 +52,8 @@ class Server:
         app.register_blueprint(mediaMusic.song)
 
         # Start the server and prevent gevent from logging requests as they're already handled.
-        self.server = WSGIServer(("0.0.0.0", 80), application=app, log=None)
+        self.server = WSGIServer((self.config.get("host", "0.0.0.0"), int(
+            self.config.get("port", "80"))), application=app, log=None)
 
         try:
             self.logger.info("Starting WMS Server")
