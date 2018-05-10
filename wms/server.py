@@ -12,7 +12,7 @@ import sys
 
 from flask import jsonify, render_template
 
-from gevent.wsgi import WSGIServer
+import cherrypy
 from wms import BASE_DIR, LIB_DIR, clientBlueprint
 from wms.api import apiBlueprintV1
 from wms.hooks import Hooks
@@ -34,9 +34,9 @@ class Server:
         def error500(error):
             return jsonify(error="Error 500", details=str(error)), 500
 
-        self.start(app, db)
+        self.setup(app, db)
 
-    def start(self, app, db):
+    def setup(self, app, db):
         # Apply WMS-Core hooks
         Hooks(app)
 
@@ -51,17 +51,26 @@ class Server:
         app.register_blueprint(mediaCovers.covers)
         app.register_blueprint(mediaMusic.song)
 
-        # Start the server and prevent gevent from logging requests as they're already handled.
-        self.server = WSGIServer((self.config.get("host", "0.0.0.0"), int(
-            self.config.get("port", "80"))), application=app, log=None)
+        self.run_server(app)
+
+    def run_server(self, app):
+        cherrypy.config.update({
+            'server.socket_port': int(self.config.get("port", "80")),
+            'server.socket_host': self.config.get("host", "0.0.0.0"),
+            'engine.autoreload.on': False,
+            'checker.on': False,
+            'tools.log_headers.on': False,
+            'request.show_tracebacks': False,
+            'request.show_mismatched_params': False,
+            'log.screen': False
+        })
+
+        cherrypy.tree.graft(app, '/')
 
         try:
-            self.logger.info("Starting WMS Server")
-            self.server.serve_forever()
+            cherrypy.engine.start()
+            cherrypy.engine.block()
         except KeyboardInterrupt:
-            self.stop()
-
-    def stop(self):
-        self.logger.info("===== Shutting Down WMS =====")
-        self.server.stop()
-        sys.exit()
+            self.logger.info("===== Shutting Down WMS =====")
+            cherrypy.engine.stop()
+            sys.exit()
