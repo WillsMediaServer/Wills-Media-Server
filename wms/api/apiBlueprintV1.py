@@ -14,10 +14,10 @@ from wms.api.v1 import musicAPI
 
 
 class api:
-    def __init__(self, database):
+    def __init__(self, database, config):
         self.logger = logging.getLogger('wms.api')
         self.api = Blueprint("apiV1", __name__, url_prefix='/api/v1')
-        self.main(self.api, database)
+        self.main(self.api, database, config)
 
-    def main(self, api, database):
-        musicAPI.Music(api, database)
+    def main(self, api, database, config):
+        musicAPI.Music(api, database, config)

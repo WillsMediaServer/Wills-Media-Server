@@ -42,7 +42,7 @@ class Server:
 
         # Add base API Blueprint
 
-        apiV1 = apiBlueprintV1.api(db)
+        apiV1 = apiBlueprintV1.api(db, self.config)
         webClientBP = clientBlueprint.WebClient(db)
         mediaCovers = covers.Covers(db)
         mediaMusic = music.Song(db)

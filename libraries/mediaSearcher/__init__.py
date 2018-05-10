@@ -29,16 +29,19 @@ class Searcher:
             self.logger.error("Media Type doesn't exist")
 
         if self.mediaResult == []:
-            logger.error("Media Searcher found no supported media files")
+            self.logger.error("Media Searcher found no supported media files")
 
     def music(self, paths):
         songs = []
-        for path in paths:
-            for dir, subdir, files in os.walk(path):
-                for filename in files:
-                    for extension in supportedExtensions["music"]:
-                        if filename.lower().endswith(extension):
-                            songs.append(os.path.join(dir, filename))
+        if (paths[0] != None) or (paths[0] == ""):
+            for path in paths:
+                for dir, subdir, files in os.walk(path):
+                    for filename in files:
+                        for extension in supportedExtensions["music"]:
+                            if filename.lower().endswith(extension):
+                                songs.append(os.path.join(dir, filename))
+        else:
+            self.logger.info("No Path is set for music")
         return songs
 
     def films(self, paths):

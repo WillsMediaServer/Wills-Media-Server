@@ -19,10 +19,11 @@ from wms.database import Albums, Artists, AudioImages, Genres, Songs
 
 
 class Music:
-    def __init__(self, api, database):
+    def __init__(self, api, database, config):
         self.logger = logging.getLogger('wms.api')
         self.libraryLogger = logging.getLogger('wms.media-library')
         self.logger.debug("Adding Music API Endpoints")
+        self.config = config
         self.getRoutes(api, database)
         self.postRoutes(api, database)
 
@@ -30,9 +31,10 @@ class Music:
 
         @api.route('/music/songs/', methods=['GET'])
         def songs():
-            limit = request.args.get("limit", 50)
+            limit = request.args.get("limit", 1000)
             offset = request.args.get("offset", 0)
             songList = Songs.query.offset(offset).limit(limit)
+            numberOfSongs = database.session.query(Songs).count()
             returnData = []
             for song in songList:
                 newSongData = {
@@ -53,7 +55,7 @@ class Music:
                     }
                 }
                 returnData.append(newSongData)
-            return jsonify(status="OK", result=returnData)
+            return jsonify(status="OK", result=returnData, number=numberOfSongs)
 
         @api.route('/music/songs/<int:id>', methods=['GET'])
         def songId(id):
@@ -161,7 +163,8 @@ class Music:
                 self.libraryLogger.info("Adding Unknown Genre placeholder")
                 database.session.add(newGenre)
 
-            searcher = Searcher("music", ["E:\Music"])
+            paths = self.config.get("musicPaths", "").split(';')
+            searcher = Searcher("music", paths)
             fileList = searcher.mediaResult
             tempLength = datetime.time(second=0)
             songNum = 0
@@ -182,6 +185,10 @@ class Music:
             self.libraryLogger.info("Adding {} songs".format(songNum))
             database.session.commit()
             return jsonify(status="OK", songsAdded=songNum)
+
+        @api.route('/music/library/metadata/', methods=['GET'])
+        def updateMetadata():
+            return jsonify(status="OK")
 
     def postRoutes(self, api, database):
         pass
