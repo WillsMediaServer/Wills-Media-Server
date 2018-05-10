@@ -10,9 +10,7 @@ Requirements
 You will need these dependencies to run WillsMediaServer.
 
 - Python >= 3.5
-- Flask 1.0.2
-- Flask_SQLAlchemy 2.3.2
-- gevent 1.2.2
+- pip
 - ffmpeg
 - A Working Computer
 
@@ -28,8 +26,17 @@ Method 1 (The Hardish way)
 
     pip install -r requirements.txt
 
-3. Start it::
+3. Download and build WMS-UI in the libraries folder::
 
+    cd libraries/
+    git clone https://github.com/WillsMediaServer/WMS-UI
+    cd WMS-UI
+    npm install
+    npm run build
+
+4. Start it::
+
+    cd ../../
     python start.py
 
 .. note::
@@ -41,7 +48,7 @@ Method 2 (The easier way)
 =========================
 
 .. note::
-    The Easier way hasn't been created yet
+    The Easier way hasn't been created yet - TODO
 
     - Write docs on installer
     - Actually create an installer
