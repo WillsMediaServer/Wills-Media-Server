@@ -8,11 +8,13 @@
 
 import base64
 import datetime
+import json
 import logging
 import os
 
 from flask import jsonify, request
 
+from mediaMetadata import Metadata
 from mediaSearcher import Searcher
 from wms import STATIC_DIR
 from wms.database import Albums, Artists, AudioImages, Genres, Songs
@@ -138,7 +140,6 @@ class Music:
 
         @api.route('/music/library/update/', methods=['GET'])
         def updateLibrary():
-
             if Albums.query.filter_by(id=1).first() == None:
                 newAlbum = Albums(name="Unknown Album",
                                   artistId=1, genreId=1, imageId=1)
@@ -163,6 +164,7 @@ class Music:
                 self.libraryLogger.info("Adding Unknown Genre placeholder")
                 database.session.add(newGenre)
 
+            database.session.commit()
             paths = self.config.get("musicPaths", "").split(';')
             searcher = Searcher("music", paths)
             fileList = searcher.mediaResult
@@ -188,6 +190,52 @@ class Music:
 
         @api.route('/music/library/metadata/', methods=['GET'])
         def updateMetadata():
+            metadataSearcher = Metadata()
+            songList = Songs.query.all()
+            for song in songList:
+                path = song.location
+                songMetadata = json.loads(metadataSearcher.metadata(
+                    path, ["artist", "title", "album"]))
+                if songMetadata["artist"] != None:
+                    if song.artistId == 1:  # Check if it is an unknown artist
+                        artistList = songMetadata["artist"].split(";")
+                        artists = []
+                        artistIds = []
+                        for artist in artistList:
+                            artists.append(artist.strip())
+                        for artist in artists:
+                            artistCheck = Artists.query.filter_by(
+                                name=artist).first()
+                            if artistCheck == None:
+                                newArtist = Artists(name=artist)
+                                database.session.add(newArtist)
+                        database.session.commit()
+                        for artist in artists:
+                            artistData = Artists.query.filter_by(
+                                name=artist).first()
+                            if artist != None:
+                                artistIds.append(artistData.id)
+                        song.artistId = artistIds[0]
+
+                if songMetadata["title"] != None:
+                    if songMetadata["title"] != song.name:
+                        song.name = songMetadata["title"]
+
+                if songMetadata["album"] != None:
+                    if song.albumId == 1:
+                        albumName = songMetadata["album"]
+                        albumCheck = Albums.query.filter_by(
+                            name=albumName).first()
+                        if albumCheck == None:
+                            album = Albums(
+                                name=albumName, artistId=1, genreId=1)
+                            database.session.add(album)
+                            database.session.commit()
+                        albumData = Albums.query.filter_by(
+                            name=albumName).first()
+                        if albumData != None:
+                            song.albumId = int(albumData.id)
+                database.session.commit()
             return jsonify(status="OK")
 
     def postRoutes(self, api, database):
