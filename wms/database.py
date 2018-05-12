@@ -50,6 +50,7 @@ class Artists(db.Model):
     description = db.Column("description", db.TEXT)
     albums = db.relationship("Albums", backref="artist", lazy=True)
     songs = db.relationship("Songs", backref="artist", lazy=True)
+    mbid = db.Column("mbid", db.String(255))
 
 
 class Albums(db.Model):
@@ -64,6 +65,7 @@ class Albums(db.Model):
         "genres.id"), nullable=False)
     songs = db.relationship("Songs", backref="album", lazy=True)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))
+    mbid = db.Column("mbid", db.String(255))
 
 
 class Songs(db.Model):
@@ -78,6 +80,7 @@ class Songs(db.Model):
     length = db.Column("length", db.TIME)
     location = db.Column("location", db.TEXT)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))
+    mbid = db.Column("mbid", db.String(255))
 
 
 class Genres(db.Model):
@@ -96,3 +99,4 @@ class AudioImages(db.Model):
     image = db.Column("image", db.TEXT)
     songs = db.relationship("Songs", backref="image", lazy=True)
     albums = db.relationship("Albums", backref="image", lazy=True)
+    url = db.Column("url", db.String(255))
