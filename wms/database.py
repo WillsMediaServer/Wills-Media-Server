@@ -62,7 +62,6 @@ class Albums(db.Model):
     releaseDate = db.Column("releaseDate", db.DATE)
     genreId = db.Column("genre", db.Integer, db.ForeignKey(
         "genres.id"), nullable=False)
-    picture = db.Column("picture", db.TEXT)
     songs = db.relationship("Songs", backref="album", lazy=True)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))
 
