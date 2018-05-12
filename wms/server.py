@@ -54,16 +54,33 @@ class Server:
         self.run_server(app)
 
     def run_server(self, app):
-        cherrypy.config.update({
-            'server.socket_port': int(self.config.get("port", "80")),
-            'server.socket_host': self.config.get("host", "0.0.0.0"),
-            'engine.autoreload.on': False,
-            'checker.on': False,
-            'tools.log_headers.on': False,
-            'request.show_tracebacks': False,
-            'request.show_mismatched_params': False,
-            'log.screen': False
-        })
+        try:
+            mode = sys.argv[1]
+        except Exception:
+            mode = "prod"
+
+        if mode != "dev":
+            cherrypy.config.update({
+                'server.socket_port': int(self.config.get("port", "80")),
+                'server.socket_host': self.config.get("host", "0.0.0.0"),
+                'engine.autoreload.on': False,
+                'checker.on': False,
+                'tools.log_headers.on': False,
+                'request.show_tracebacks': False,
+                'request.show_mismatched_params': False,
+                'log.screen': False
+            })
+        else:
+            cherrypy.config.update({
+                'server.socket_port': int(self.config.get("port", "80")),
+                'server.socket_host': self.config.get("host", "0.0.0.0"),
+                'engine.autoreload.on': True,
+                'checker.on': True,
+                'tools.log_headers.on': True,
+                'request.show_tracebacks': True,
+                'request.show_mismatched_params': True,
+                'log.screen': False
+            })
 
         cherrypy.tree.graft(app, '/')
 
