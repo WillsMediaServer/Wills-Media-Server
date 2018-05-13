@@ -1,7 +1,6 @@
 # folders
 
 __pycache__/
-libraries/*
 .idea/
 _build/
 
@@ -17,6 +16,4 @@ _build/
 
 # specific folders
 
-!libraries/mediaSearcher
-!libraries/mediaMetadata
-!libraries/externalAPI
+libraries/ffmpeg
