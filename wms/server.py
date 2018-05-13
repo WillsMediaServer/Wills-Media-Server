@@ -20,7 +20,7 @@ from wms.media import covers, music
 
 
 class Server:
-    def __init__(self, app, db, config):
+    def __init__(self, app, db, config, security):
         self.logger = logging.getLogger('wms.core')
         self.logger.info("===== WMS is Starting =====")
         self.config = config

@@ -22,6 +22,7 @@ from logging.config import dictConfig
 
 from wms.config import Config
 from wms.database import db
+from wms.security import Security
 
 # create a handy BASE_DIR variable
 BASE_DIR = os.path.normpath(os.path.join(
@@ -125,5 +126,5 @@ def init():
 
     # Initialize Config
     config = Config(app, db)
-
-    server = Server(app, db, config)
+    security = Security(config)
+    server = Server(app, db, config, security)
