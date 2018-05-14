@@ -7,8 +7,11 @@
 
 import logging
 
+from .musicBrainz import MusicBrainsAPI
+
 
 class ExternalAPI:
     def __init__(self):
         self.logger = logging.getLogger("wms.external-api")
         self.logger.info("Starting External APIs")
+        self.MusicBrainsAPI = MusicBrainsAPI

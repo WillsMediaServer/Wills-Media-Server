@@ -7,36 +7,18 @@
 
 import logging
 
-import requests
+import musicbrainzngs
 
 
 class MusicBrainsAPI:
     def __init__(self):
         self.logger = logging.getLogger("wms.external-api.musicbrainz")
+        musicbrainzngs.set_useragent("WillsMediaServer", "v0.0.1.0 ALPHA")
 
-    def get(self, songName, songArtist=""):
-        url = "http://musicbrainz.org/ws/2/release?fmt=json&query=release:{}".format(
-            songName)
-        if songArtist != "":
-            url = url + " AND artist:{}".format(songArtist)
-
-        request = requests.get(url)
-        if request.status_code == 200:
-            result = request.json()
-            song = result["releases"][0]
-            metadata = {
-                "name": str(song["title"]),
-                "artist_mbid": str(song["artist-credit"][0]["artist"]["id"]),
-                "album_mbid": str(song["release-group"]["id"]),
-                "song_mbid": str(song["id"])
-            }
-
-            return metadata
+    def get_song(self, songName, songArtists):
+        if songArtists != "":
+            results = musicbrainzngs.search_releases(
+                release=songName, artist=songArtists)
         else:
-            self.logger.warning(
-                "Failed to get metadata on {} by {}".format(songName, songArtist))
-            return None
-
-
-mbapi = MusicBrainsAPI()
-print(mbapi.get("", ""))
+            results = musicbrainzngs.search_releases(release=songName)
+        return results["release-list"][0]
