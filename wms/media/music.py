@@ -1,9 +1,11 @@
 import logging
 import os
 
-from flask import Blueprint, Response, jsonify, send_file, stream_with_context
+from flask import (Blueprint, Response, jsonify, request, send_file,
+                   stream_with_context)
 from werkzeug.datastructures import Headers
 
+from mediaConverter import Converter
 from wms.database import Songs
 
 
@@ -22,11 +24,13 @@ class Song:
             "aac": "audio/aac",
             "wma": "audio/x-ms-wma"
         }
+        self.conv = Converter()
         self.main(self.song, database)
 
     def main(self, song, database):
         @song.route('/<int:id>')
         def getSong(id):
+            format = request.args.get("format", None)
             song = Songs.query.filter_by(id=id).first()
             if song != None:
                 try:
@@ -34,6 +38,11 @@ class Song:
                     for extension in self.supportedExtensions:
                         if songLocation.lower().endswith(extension):
                             songMime = self.supportedMimes[extension]
+                            if format != None:
+                                if extension.lower() != format.lower():
+                                    songLocation = self.conv.convert(
+                                        songLocation, format, song.id)
+                                    songMime = self.supportedMimes[format]
                             break
                         else:
                             songMime = "audio/*"

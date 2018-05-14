@@ -11,9 +11,11 @@ import datetime
 import json
 import logging
 import os
+from multiprocessing.dummy import Pool as ThreadPool
 
 from flask import jsonify, request
 
+import externalAPI
 from mediaMetadata import Metadata
 from mediaSearcher import Searcher
 from wms import STATIC_DIR
@@ -238,6 +240,29 @@ class Music:
                             song.albumId = int(albumData.id)
                 database.session.commit()
             return jsonify(status="OK")
+
+        @api.route('/music/library/ext-update/')
+        def externalApiMetadata():
+            songList = Songs.query.all()
+            mbapi = externalAPI.ExternalAPI().MusicBrainsAPI()
+            all = []
+            data = []
+            for song in songList:
+                artistNames = ""
+                if song.allArtists != None:
+                    for artist in json.loads(song.allArtists):
+                        artistData = Artists.query.filter_by(id=artist).first()
+                        artistNames = artistNames + artistData.name
+                data.append({
+                    "name": str(song.name),
+                    "artists": str(artistNames)
+                })
+            currentId = 0
+            pool = ThreadPool(4)
+            for song in data:
+                result = mbapi.get_song(song["name"], song["artists"])
+                all.append(result)
+            return jsonify(status="OK", result=data)
 
     def postRoutes(self, api, database):
         pass

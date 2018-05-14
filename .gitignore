@@ -16,4 +16,5 @@ _build/
 
 # specific folders
 
+wms/static/music
 libraries/ffmpeg
