@@ -77,6 +77,7 @@ class Songs(db.Model):
         "albums.id"), nullable=False)
     artistId = db.Column("artist", db.Integer,
                          db.ForeignKey("artists.id"), nullable=False)
+    allArtists = db.Column("allArtists", db.String())
     length = db.Column("length", db.TIME)
     location = db.Column("location", db.TEXT)
     imageId = db.Column("image", db.Integer, db.ForeignKey("images.id"))

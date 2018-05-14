@@ -9,7 +9,7 @@ import logging
 import os
 
 supportedExtensions = {
-    "music": ["mp3", "wav", "ogg", "m4a", "flac", "aac"],
+    "music": ["mp3", "wav", "ogg", "m4a", "flac", "aac", "wma"],
     "films": [],
     "tv": []
 }

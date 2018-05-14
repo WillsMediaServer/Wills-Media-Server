@@ -216,6 +216,7 @@ class Music:
                             if artist != None:
                                 artistIds.append(artistData.id)
                         song.artistId = artistIds[0]
+                        song.allArtists = str(artistIds)
 
                 if songMetadata["title"] != None:
                     if songMetadata["title"] != song.name:
