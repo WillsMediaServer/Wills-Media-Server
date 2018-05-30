@@ -83,6 +83,11 @@ class Server:
             })
 
         cherrypy.tree.graft(app, '/')
+        cherrypy.tree.mount(None, '/static', {'/': {
+            'tools.staticdir.dir': os.path.join(app.static_folder, "WMS-WebUI"),
+            'tools.staticdir.on': True,
+            'tools.gzip.on': True
+        }})
 
         try:
             cherrypy.engine.start()
