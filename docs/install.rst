@@ -12,31 +12,32 @@ You will need these dependencies to run WillsMediaServer.
 - Python >= 3.5
 - pip
 - ffmpeg
-- A Working Computer
+- NodeJS
+- Yarn
 
 Method 1 (The Hardish way)
 ==========================
 
-1. Clone the repository then cd into it::
+1. Clone the repository::
 
     git clone https://github.com/WillsMediaServer/WMS-Core
-    cd WMS-Core
 
 2. Download all dependencies::
 
     pip install -r requirements.txt
 
-3. Download and build WMS-UI in the libraries folder::
+3. Clone and build WMS-UI (not inside the wms-core directory)::
 
-    cd libraries/
     git clone https://github.com/WillsMediaServer/WMS-UI
     cd WMS-UI
-    npm install
-    npm run build
+    yarn install
+    yarn run build
 
-4. Start it::
+4. Copy the contents of the dist folder created by the build to the 
+/wms/static/WMS-WebUI directory
 
-    cd ../../
+5. Start the server::
+
     python start.py
 
 .. note::
