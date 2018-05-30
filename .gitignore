@@ -17,4 +17,5 @@ _build/
 # specific folders
 
 wms/static/music
+wms/static/WMS-WebUI
 libraries/ffmpeg
