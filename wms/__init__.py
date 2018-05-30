@@ -105,7 +105,7 @@ def init():
     werkzeug_logger = logging.getLogger('werkzeug')
     werkzeug_logger.disabled = True
 
-    if not os.path.exists(os.path.join(STATIC_DIR, "index.html")):
+    if not os.path.exists(os.path.join(STATIC_DIR, "WMS-WebUI")):
         logging.critical(
             "WMS-WebUI build doesnt exist.")
         logging.info("Now Exiting")
