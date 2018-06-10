@@ -13,7 +13,7 @@ import sys
 from flask import jsonify, render_template
 
 import cherrypy
-from wms import BASE_DIR, LIB_DIR, clientBlueprint
+from wms import BASE_DIR, LIB_DIR, SECURITY_DIR, clientBlueprint
 from wms.api import apiBlueprintV1
 from wms.hooks import Hooks
 from wms.media import covers, music
@@ -70,6 +70,23 @@ class Server:
                 'request.show_mismatched_params': False,
                 'log.screen': False
             })
+
+            https = self.config.get("https", "false")
+            if https == "true":
+                self.logger.info("Enabling https")
+                cherrypy.config.update({
+                    'server.socket_host': self.config.get("host", "0.0.0.0"),
+                    'engine.autoreload.on': False,
+                    'checker.on': False,
+                    'tools.log_headers.on': False,
+                    'request.show_tracebacks': False,
+                    'request.show_mismatched_params': False,
+                    'log.screen': False,
+                    'server.socket_port': 443,
+                    'server.ssl_module': 'builtin',
+                    'server.ssl_certificate': os.path.join(SECURITY_DIR, "wmsCert.crt"),
+                    'server.ssl_private_key': os.path.join(SECURITY_DIR, "wmsCert.key")
+                }) 
         else:
             cherrypy.config.update({
                 'server.socket_port': int(self.config.get("port", "80")),

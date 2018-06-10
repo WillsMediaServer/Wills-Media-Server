@@ -23,6 +23,6 @@ class WebClient:
     def main(self, webClient, database):
         @webClient.route('/')
         def webClient():
-            with open(os.path.join(STATIC_DIR, "index.html"), 'r') as webClientFile:
+            with open(os.path.join(STATIC_DIR, "WMS-WebUI", "index.html"), 'r') as webClientFile:
                 webClientHTML = webClientFile.read()
             return str(webClientHTML)

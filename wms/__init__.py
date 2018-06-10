@@ -29,6 +29,7 @@ BASE_DIR = os.path.normpath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), ".."))
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 STATIC_DIR = os.path.join(BASE_DIR, "wms", "static")
+SECURITY_DIR = os.path.join(BASE_DIR, "wms", "security")
 LIB_DIR = os.path.join(BASE_DIR, "libraries")
 # and use it to insert the libraries folder to the path
 sys.path.insert(1, LIB_DIR)
@@ -127,5 +128,5 @@ def init():
 
     # Initialize Config
     config = Config(app, db)
-    security = Security(config)
+    security = Security(config, SECURITY_DIR)
     server = Server(app, db, config, security)

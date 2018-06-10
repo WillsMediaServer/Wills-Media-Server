@@ -2,6 +2,7 @@
 
 __pycache__/
 .idea/
+.vscode/
 _build/
 
 # files
@@ -11,11 +12,13 @@ _build/
 *.log
 *.log.*
 *.pyc
+*.txt
 
 !make.bat
 
 # specific folders
 
+wms/security/
 wms/static/music
 wms/static/WMS-WebUI
 libraries/ffmpeg

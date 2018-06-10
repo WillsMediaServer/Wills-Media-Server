@@ -8,8 +8,14 @@
 
 import logging
 
+import libraries.wmsCertGen
+
 
 class Security:
-    def __init__(self, config):
+    def __init__(self, config, SECURITY_DIR):
         self.logger = logging.getLogger("wms.security")
         self.logger.info("starting Security")
+        httpsSetting = config.get("https", "false")
+        if httpsSetting == "true":
+            self.logger.info("HTTPS enabled")
+            self.cert = libraries.wmsCertGen.CertGen(config, SECURITY_DIR)
