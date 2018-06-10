@@ -20,13 +20,16 @@
 #### Prerequisites
 
 - [ ] Python 3.5 or above
-- [ ] ffmpeg
+- [ ] ffmpeg (Local or Global)
+- [ ] OpenSSL (Global)
 - [ ] A Computer with internet access
 
 ##### WMS-UI
 
 - [ ] Nodejs
 - [ ] NPM
+
+#### Instructions
 
 To install Wills Media Server you will need to clone the repository and then change directory into it.
 ```
@@ -43,24 +46,25 @@ pip install -r requirements.txt --target=/path/to/WMS-Core/libraries
 ```
 (the second command should only be ran if you cannot or do not want to install the packages globaly)
 
-next change directory into the libraries folder and clone the user interface into it
+next change directory out of wms and clone the user interface
 
 ```
 cd libraries
-git clone https://github.com/WillsMediaServer/WMS-UI.git
+git clone https://github.com/WillsMediaServer/WMS-WebUI.git
 ```
 
 and then you will need to download all the dependencies and build the latest version of the UI with:
 
 ```
-cd WMS-UI
+cd WMS-WebUI
 npm install
 npm run build
 ```
 
-and finaly run:
+next, copy accross the files created in the dist folder to the wms/static/WMS-WebUI folder
+
+and finaly run this in WMS-Core:
 ```
-cd ../../
 python start.py
 ```
 
