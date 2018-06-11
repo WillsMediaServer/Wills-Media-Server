@@ -10,6 +10,7 @@
 ![PyUp](https://pyup.io/repos/github/WillsMediaServer/WMS-Core/shield.svg)
 ![P3rdy](https://pyup.io/repos/github/WillsMediaServer/WMS-Core/python-3-shield.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9d036eafad5748619c80cddbd0dca960)](https://app.codacy.com/app/wneild5/WMS-Core?utm_source=github.com&utm_medium=referral&utm_content=WillsMediaServer/WMS-Core&utm_campaign=badger)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c156c4e2f9024a5db8c42f57977ee035)](https://www.codacy.com/app/wneild5/WMS-Core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=WillsMediaServer/WMS-Core&amp;utm_campaign=Badge_Coverage)
 [![Documentation Status](https://readthedocs.org/projects/wills-media-server/badge/?version=latest)](http://wills-media-server.readthedocs.io/en/latest/?badge=latest)
 
 ## Table of Contents
