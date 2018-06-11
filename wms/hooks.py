@@ -11,7 +11,7 @@ import gzip
 
 from io import BytesIO as IO
 
-from flask import Flask, request
+from flask import request
 
 
 

@@ -71,8 +71,8 @@ class Music:
             return jsonify(status="OK", result=returnData, number=numberOfSongs)
 
         @api.route('/music/songs/<int:id>', methods=['GET'])
-        def songId(id):
-            song = Songs.query.filter_by(id=int(id)).first()
+        def songId(sid):
+            song = Songs.query.filter_by(id=int(sid)).first()
             if song != None:
                 returnData = {
                     'id': int(song.id),
@@ -93,7 +93,7 @@ class Music:
                 }
                 return jsonify(status="OK", result=returnData)
             else:
-                return jsonify(status="ERROR", error="Song with ID: {} does NOT exist".format(id))
+                return jsonify(status="ERROR", error="Song with ID: {} does NOT exist".format(sid))
 
         @api.route('/music/artists/', methods=['GET'])
         def artists():
@@ -115,8 +115,8 @@ class Music:
             return jsonify(status="OK", result=returnData)
 
         @api.route('/music/artists/<int:id>', methods=['GET'])
-        def artistId(id):
-            artist = Artists.query.filter_by(id=id).first()
+        def artistId(aid):
+            artist = Artists.query.filter_by(id=aid).first()
             if artist != None:
                 returnData = {
                     'id': int(artist.id),
@@ -131,23 +131,23 @@ class Music:
                     returnData["songs"].append(int(song.id))
                 return jsonify(status="OK", result=returnData)
             else:
-                return jsonify(status="ERROR", error="Artist with ID: {} does NOT exist".format(id))
+                return jsonify(status="ERROR", error="Artist with ID: {} does NOT exist".format(aid))
 
         @api.route('/music/albums/', methods=['GET'])
         def albums():
             return "OK"
 
         @api.route('/music/albums/<int:id>', methods=['GET'])
-        def albumId(id):
-            return jsonify(id=str(id), status="OK")
+        def albumId(aid):
+            return jsonify(id=str(aid), status="OK")
 
         @api.route('/music/genres/', methods=['GET'])
         def genres():
             return "OK"
 
         @api.route('/music/genres/<int:id>', methods=['GET'])
-        def genreId(id):
-            return jsonify(id=str(id), status="OK")
+        def genreId(gid):
+            return jsonify(id=str(gid), status="OK")
 
         @api.route('/music/library/update/', methods=['GET'])
         def updateLibrary():

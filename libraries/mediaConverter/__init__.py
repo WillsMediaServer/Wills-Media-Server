@@ -23,6 +23,7 @@ class Converter:
             data = subprocess.Popen(
                 ["ffmpeg", "-version"], stdout=subprocess.PIPE)
             stdout, stderr = data.communicate()
+            self.logger.debug(stderr)
             self.logger.debug(stdout.decode("utf-8"))
         except OSError as e:
             self.logger.debug("ffmpeg path error: {}".format(e))
@@ -43,7 +44,7 @@ class Converter:
         except Exception as e:
             self.logger.error(e)
 
-    def convert(self, path, format, songId):
+    def conv(self, path, format, songId):
         AUDIO_DIR = os.path.join(STATIC_DIR, "music", format)
         if not os.path.exists(AUDIO_DIR):
             os.makedirs(AUDIO_DIR)

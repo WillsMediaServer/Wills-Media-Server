@@ -1,8 +1,7 @@
 import logging
 import os
 
-from flask import (Blueprint, Response, jsonify, request, send_file,
-                   stream_with_context)
+from flask import Blueprint, Response, jsonify, request, stream_with_context
 from werkzeug.datastructures import Headers
 
 from mediaConverter import Converter
@@ -29,20 +28,20 @@ class Song:
 
     def main(self, song, database):
         @song.route('/<int:id>')
-        def getSong(id):
-            format = request.args.get("format", None)
-            song = Songs.query.filter_by(id=id).first()
+        def getSong(sid):
+            fmt = request.args.get("format", None)
+            song = Songs.query.filter_by(id=sid).first()
             if song != None:
                 try:
                     songLocation = song.location
                     for extension in self.supportedExtensions:
                         if songLocation.lower().endswith(extension):
                             songMime = self.supportedMimes[extension]
-                            if format != None:
-                                if extension.lower() != format.lower():
-                                    songLocation = self.conv.convert(
-                                        songLocation, format, song.id)
-                                    songMime = self.supportedMimes[format]
+                            if fmt != None:
+                                if extension.lower() != fmt.lower():
+                                    songLocation = self.conv.conv(
+                                        songLocation, fmt, song.id)
+                                    songMime = self.supportedMimes[fmt]
                             break
                         else:
                             songMime = "audio/*"

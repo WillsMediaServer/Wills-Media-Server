@@ -16,7 +16,7 @@ supportedExtensions = {
 
 
 class Searcher:
-    def __init__(self, mediaType, paths=[]):
+    def __init__(self, mediaType, paths):
         self.logger = logging.getLogger('wms.media-searcher')
         self.mediaResult = []
         if mediaType == "music":

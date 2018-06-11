@@ -43,7 +43,7 @@ class Metadata:
         except Exception as e:
             self.logger.error(e)
 
-    def metadata(self, path, tags=[]):
+    def metadata(self, path, tags):
         metadata = subprocess.Popen([
             os.path.join(self.ffmpegDir, "ffprobe"),
             "-v",
@@ -55,12 +55,11 @@ class Metadata:
         ], stdout=subprocess.PIPE)
         stdout, stderr = metadata.communicate()
         jsonMetadata = json.loads(stdout)
-        # self.logger.debug("STDERR: {}".format(stderr))
-        # self.logger.debug("STDOUT: {}".format(json.dumps(jsonMetadata)))
+        self.logger.debug("STDERR: {}".format(stderr))
         returnData = {}
         for tag in tags:
             try:
                 returnData[tag] = jsonMetadata["format"]["tags"][tag]
-            except:
+            except Exception:
                 returnData[tag] = None
         return json.dumps(returnData)

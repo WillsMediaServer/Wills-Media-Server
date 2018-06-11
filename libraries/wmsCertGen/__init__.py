@@ -15,6 +15,7 @@ class CertGen:
                     "version"
                 ], stdout=subprocess.PIPE)
             stdout, stderr = data.communicate()
+            self.logger.debug(stderr)
             self.logger.debug(stdout.decode("utf-8"))
         except Exception:
             self.logger.info("openSSL Doesn't exist on the path, please install it or disable https")
@@ -29,16 +30,15 @@ class CertGen:
     def generate(self):
         self.logger.info("Need to generate {}".format(self.generateList))
         toDoList = self.generateList
-        securityKey = self.config.get("security_key", "".join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32)))
-
+        
         if "CA-Private-Key" in toDoList:
             self.logger.info("Generating WMS Cert Auth Private Key")
             pkeygenLocation = os.path.join(self.SECURITY_DIR, "wmsCA.key")
             pkeygen = subprocess.Popen([
-                    "openssl", 
+                    "openssl",
                     "genrsa",
-                    "-out", 
-                    pkeygenLocation,  
+                    "-out",
+                    pkeygenLocation,
                     "2048"
                 ], stdout=subprocess.PIPE)
             stdout, stderr = pkeygen.communicate()
@@ -47,22 +47,20 @@ class CertGen:
             self.logger.info("Generating WMS Cert Auth Private Key")
             pkeygenLocation = os.path.join(self.SECURITY_DIR, "wmsCA.key")
             rootcertLocation = os.path.join(self.SECURITY_DIR, "wmsCA.pem")
-            rootcertPackageLocation = os.path.join(self.SECURITY_DIR, "wmsCA.pfx")
-            rootcertConfig = os.path.join(self.SECURITY_DIR, "../", "../", "libraries", "wmsCertGen", "wmsCAconfig.cfn")
             rootcertGen = subprocess.Popen([
-                    "openssl", 
-                    "req", 
-                    "-x509", 
-                    "-new", 
-                    "-nodes", 
-                    "-key", 
-                    pkeygenLocation, 
-                    "-sha256", 
-                    "-days", 
-                    "365", 
-                    "-subj", 
-                    "/C=GB/ST=Unknown/L=Unknown/O=Wills Media Server/CN=Wills Media Server", 
-                    "-out", 
+                    "openssl",
+                    "req",
+                    "-x509",
+                    "-new",
+                    "-nodes",
+                    "-key",
+                    pkeygenLocation,
+                    "-sha256",
+                    "-days",
+                    "365",
+                    "-subj",
+                    "/C=GB/ST=Unknown/L=Unknown/O=Wills Media Server/CN=Wills Media Server",
+                    "-out",
                     rootcertLocation
                 ], stdout=subprocess.PIPE)
             stdout, stderr = rootcertGen.communicate()
@@ -71,10 +69,10 @@ class CertGen:
             self.logger.info("Generating WMS Certificate Private Key")
             pkeygenLocation = os.path.join(self.SECURITY_DIR, "wmsCert.key")
             pkeygen = subprocess.Popen([
-                    "openssl", 
-                    "genrsa",  
-                    "-out", 
-                    pkeygenLocation, 
+                    "openssl",
+                    "genrsa",
+                    "-out",
+                    pkeygenLocation,
                     "2048"
                 ], stdout=subprocess.PIPE)
             stdout, stderr = pkeygen.communicate()
@@ -84,14 +82,14 @@ class CertGen:
             pkeygenLocation = os.path.join(self.SECURITY_DIR, "wmsCert.key")
             csrLocation = os.path.join(self.SECURITY_DIR, "wmsCert.csr")
             csrGen = subprocess.Popen([
-                    "openssl", 
-                    "req", 
-                    "-new", 
-                    "-key", 
-                    pkeygenLocation, 
-                    "-subj", 
-                    "/C=GB/ST=Unknown/L=Unknown/O=Wills Media Server/CN=WMS", 
-                    "-out", 
+                    "openssl",
+                    "req",
+                    "-new",
+                    "-key",
+                    pkeygenLocation,
+                    "-subj",
+                    "/C=GB/ST=Unknown/L=Unknown/O=Wills Media Server/CN=WMS",
+                    "-out",
                     csrLocation
                 ], stdout=subprocess.PIPE)
             stdout, stderr = csrGen.communicate()

@@ -10,10 +10,10 @@ import logging
 import os
 import sys
 
-from flask import jsonify, render_template
+from flask import jsonify
 
 import cherrypy
-from wms import BASE_DIR, LIB_DIR, SECURITY_DIR, clientBlueprint
+from wms import LIB_DIR, SECURITY_DIR, clientBlueprint
 from wms.api import apiBlueprintV1
 from wms.hooks import Hooks
 from wms.media import covers, music
@@ -86,7 +86,7 @@ class Server:
                     'server.ssl_module': 'builtin',
                     'server.ssl_certificate': os.path.join(SECURITY_DIR, "wmsCert.crt"),
                     'server.ssl_private_key': os.path.join(SECURITY_DIR, "wmsCert.key")
-                }) 
+                })
         else:
             cherrypy.config.update({
                 'server.socket_port': int(self.config.get("port", "80")),
